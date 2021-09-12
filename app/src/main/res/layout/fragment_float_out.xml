@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="myFloatOutViewModel"
+            type="com.example.airtelmanewakala.viewmodel.FloatOutViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Fragments.FloatOut"
+        android:layout_margin="15dp"
+        android:paddingHorizontal="10dp">
+
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            android:layout_gravity="center"
+            >
+            <com.google.android.material.chip.Chip
+                android:id="@+id/zerobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="@={myFloatOutViewModel.zeroButton}"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/onebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="@={myFloatOutViewModel.oneButton}"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/twobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="@={myFloatOutViewModel.twoButton}"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/threebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="@={myFloatOutViewModel.threeButton}"
+                />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/fourbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="@={myFloatOutViewModel.fourButton}"
+                />
+        </com.google.android.material.chip.ChipGroup>
+
+        </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatout_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/download_wakala"
+            app:fabSize="auto"
+            app:backgroundTint="#4527A0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/floatout_recyclerView"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

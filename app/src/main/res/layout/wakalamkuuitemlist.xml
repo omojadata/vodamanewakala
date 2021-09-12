@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_layout"
+            android:background="?attr/selectableItemBackground"
+            android:minHeight="88dp">
+            <View android:id="@+id/first_tile_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/dividerVertical" />
+            <TextView
+                android:id="@+id/tigopesa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_below="@id/first_tile_divider"
+                android:paddingTop="1dp"
+                android:paddingEnd="16dp"
+                android:maxLines="2"
+                android:text="TIGOPESA"
+                android:textSize="15dp"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textColor="#808080"/>
+            <TextView
+                android:id="@+id/tigo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tigopesa"
+                android:layout_gravity="center_vertical"
+                android:textSize="15dp"
+                android:paddingEnd="16dp"
+                android:maxLines="30"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="#000000"/>
+            <View android:id="@+id/tile_divider1"
+                android:layout_below="@id/tigo"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/dividerVertical" />
+            <TextView
+                android:id="@+id/airtelmoney"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tile_divider1"
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="16dp"
+                android:maxLines="2"
+                android:text="AIRTELMONEY"
+                android:textSize="15dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="#808080"/>
+            <TextView
+                android:id="@+id/airtel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/airtelmoney"
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="16dp"
+                android:maxLines="3"
+                android:textSize="15dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="#000000"/>
+            <View android:id="@+id/tile_divider2"
+                android:layout_below="@id/airtel"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/dividerVertical" />
+            <TextView
+                android:id="@+id/mpesa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tile_divider2"
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="16dp"
+                android:maxLines="2"
+                android:text="MPESA"
+                android:textSize="15dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="#808080"/>
+            <TextView
+                android:id="@+id/vodacom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mpesa"
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="16dp"
+                android:maxLines="3"
+                android:textSize="15dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="#000000"/>
+            <View android:id="@+id/tile_divider3"
+                android:layout_below="@id/vodacom"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/dividerVertical" />
+            <TextView
+                android:id="@+id/halopesa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tile_divider3"
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="16dp"
+                android:maxLines="2"
+                android:text="HALOPESA"
+                android:textSize="15dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="#808080"/>
+            <TextView
+                android:id="@+id/halotel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/halopesa"
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="16dp"
+                android:maxLines="3"
+                android:textSize="15dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="#000000"/>
+            <View android:id="@+id/tile_divider4"
+                android:layout_below="@id/halotel"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/dividerVertical" />
+            <TextView
+                android:id="@+id/tpesa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tile_divider4"
+
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="16dp"
+                android:maxLines="2"
+                android:text="TTCL"
+                android:textSize="15dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="#808080"/>
+            <TextView
+                android:id="@+id/ttcl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tpesa"
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="16dp"
+                android:maxLines="3"
+                android:textSize="15dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="#000000"/>
+
+        </RelativeLayout>
+
+    </layout>

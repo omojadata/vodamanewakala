@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="myWakalaViewModel"
+            type="com.example.airtelmanewakala.viewmodel.WakalaViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.Wakala"
+    android:layout_margin="15dp"
+    android:paddingHorizontal="10dp">
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#F5F5F5"
+            android:elevation="1dp"
+            android:queryHint="Search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/wakala_recyclerView"
+        android:layout_margin="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/wakala_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/wakala"
+            app:fabSize="auto"
+            app:backgroundTint="#4527A0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/refresh_wakala_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:fabSize="auto"
+            app:backgroundTint="#6A1B9A"
+            app:layout_constraintBottom_toTopOf="@+id/wakala_fab"
+            app:layout_constraintEnd_toEndOf="@+id/wakala_fab"
+            app:layout_constraintStart_toStartOf="@+id/wakala_fab"
+            app:srcCompat="@drawable/refresh_wakala" />
+
+        <TextView
+            android:id="@+id/refresh_wakala_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Refresh Wakala"
+            app:layout_constraintBottom_toBottomOf="@+id/refresh_wakala_fab"
+            app:layout_constraintEnd_toStartOf="@+id/refresh_wakala_fab"
+            app:layout_constraintTop_toTopOf="@+id/refresh_wakala_fab" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/download_wakala_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:fabSize="auto"
+            app:backgroundTint="#9c27b0"
+            app:layout_constraintBottom_toTopOf="@+id/refresh_wakala_fab"
+            app:layout_constraintEnd_toEndOf="@+id/refresh_wakala_fab"
+            app:layout_constraintStart_toStartOf="@+id/refresh_wakala_fab"
+            app:srcCompat="@drawable/download_wakala" />
+        <TextView
+            android:id="@+id/download_wakala_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text=".CSV Wakala"
+            app:layout_constraintBottom_toBottomOf="@+id/download_wakala_fab"
+            app:layout_constraintEnd_toStartOf="@+id/download_wakala_fab"
+            app:layout_constraintTop_toTopOf="@+id/download_wakala_fab" />
+            <TextView
+                android:id="@+id/list_wakala_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:maxLines="2"
+                android:text="0"
+                app:layout_constraintBottom_toTopOf="@+id/download_wakala_fab"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/download_wakala_text" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

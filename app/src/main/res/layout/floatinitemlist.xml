@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/floatincard_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_margin="2dp"
+            app:cardBackgroundColor="#009688"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp">
+
+            <RelativeLayout
+                android:id="@+id/list_item_layout"
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/sectionone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingTop="1dp"
+                    android:paddingEnd="16dp"
+                    android:maxLines="4"
+                    android:text="TIGOPESA"
+                    android:textSize="15dp"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textColor="#000000"/>
+                <View android:id="@+id/tile_divider1"
+                    android:layout_below="@id/sectionone"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/dividerVertical" />
+                <TextView
+                    android:id="@+id/sectiontwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tile_divider1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="15dp"
+                    android:paddingEnd="16dp"
+                    android:maxLines="2"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="#000000"/>
+
+                <View android:id="@+id/tile_divider2"
+                    android:layout_below="@id/sectiontwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/dividerVertical" />
+                <TextView
+                    android:id="@+id/sectionthree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tile_divider2"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="15dp"
+                    android:paddingEnd="16dp"
+                    android:maxLines="2"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="#000000"/>
+
+
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+</layout>

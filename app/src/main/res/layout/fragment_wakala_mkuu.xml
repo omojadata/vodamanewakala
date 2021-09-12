@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="myWakalaMkuuViewModel"
+            type="com.example.airtelmanewakala.viewmodel.WakalaMkuuViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Fragments.WakalaMkuu"
+        android:layout_margin="15dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/wakalamkuu_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="5dp"
+        />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/wakalamkuu_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/wakala"
+            app:fabSize="auto"
+            app:backgroundTint="#9c27b0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/refresh_wakalamkuu_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:fabSize="auto"
+            app:backgroundTint="#9c27b0"
+            app:layout_constraintBottom_toTopOf="@+id/wakalamkuu_fab"
+            app:layout_constraintEnd_toEndOf="@+id/wakalamkuu_fab"
+            app:layout_constraintStart_toStartOf="@+id/wakalamkuu_fab"
+            app:srcCompat="@drawable/refresh_wakala" />
+
+        <TextView
+            android:id="@+id/refresh_wakalamkuu_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Add WakalaMkuu"
+            app:layout_constraintBottom_toBottomOf="@+id/refresh_wakalamkuu_fab"
+            app:layout_constraintEnd_toStartOf="@+id/refresh_wakalamkuu_fab"
+            app:layout_constraintTop_toTopOf="@+id/refresh_wakalamkuu_fab" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

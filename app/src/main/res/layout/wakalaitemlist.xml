@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_layout"
+        android:background="?attr/selectableItemBackground"
+        android:minHeight="88dp">
+        <View android:id="@+id/tile_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/dividerVertical" />
+        <TextView
+            android:id="@+id/airtelname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@id/tile_divider"
+            android:paddingTop="1dp"
+            android:paddingEnd="16dp"
+            android:maxLines="2"
+            android:textSize="15dp"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="#808080"/>
+
+        <TextView
+            android:id="@+id/vodaname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/airtelname"
+            android:layout_gravity="center_vertical"
+            android:textSize="15dp"
+            android:paddingEnd="16dp"
+            android:maxLines="2"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="#000000"/>
+        <TextView
+            android:id="@+id/tigoname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vodaname"
+            android:layout_gravity="center_vertical"
+            android:paddingEnd="16dp"
+            android:maxLines="2"
+            android:textSize="15dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="#808080"/>
+        <TextView
+            android:id="@+id/haloname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tigoname"
+            android:layout_gravity="center_vertical"
+            android:paddingEnd="16dp"
+            android:maxLines="2"
+            android:textSize="15dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="#000000"/>
+        <TextView
+            android:id="@+id/contactname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/haloname"
+            android:layout_gravity="center_vertical"
+            android:paddingEnd="16dp"
+            android:maxLines="1"
+            android:textSize="15dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/colorPrimary"/>
+
+    </RelativeLayout>
+
+</layout>
