@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-//    private lateinit var wakalaMkuuViewModel: WakalaMkuuViewModel
+//    private hassan manengelo lateinit var wakalaMkuuViewModel: WakalaMkuuViewModel
   lateinit var dataStorePreference: DataStorePreference
    var auto=""
     override fun onCreate(savedInstanceState: Bundle?) {
