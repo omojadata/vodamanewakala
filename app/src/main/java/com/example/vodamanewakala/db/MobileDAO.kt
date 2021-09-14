@@ -24,7 +24,7 @@ interface MobileDAO {
     @Insert
     suspend fun insertFloatIn(FloatIn: FloatIn)
 
-    @Query("UPDATE floatin_table SET status = :status,wakalaorder=:wakalaorder,comment=:comment,towakalacode=:towakalacode, wakalamkuunumber=:wakalamkuunumber,towakalaname=:towakalaname ,modifiedat=:modifiedat WHERE floatinid=:floatinid AND status=0")
+    @Query("UPDATE floatin_table SET status = :status,wakalaorder=:wakalaorder,comment=:comment,towakalacode=:towakalacode, wakalamkuunumber=:wakalamkuunumber,towakalaname=:towakalaname ,modifiedat=:modifiedat WHERE floatinid=:floatinid AND (status=0 OR status=2)")
     suspend fun updateFloatIn(
         status: Int,
         floatinid: Int,

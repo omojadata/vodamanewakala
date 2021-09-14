@@ -287,11 +287,11 @@ class FloatIn : Fragment() {
                     floatInViewModel.uFloatInLarge(floatIn.floatinid,"LARGE",modifiedAt)
 
                     val sendSms =
-                        "Kiwango chako cha juu ni Tsh $maxamount. Muamala No: ${floatIn.transid}, Kiasi: Tsh $amounting, Muda uliotuma: $timeM, Muda ulioingia: $timeC, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Mpesa au Halopesa."
+                        "Kiwango chako cha juu ni Tsh $maxamount. Muamala No: ${floatIn.transid}, Kiasi: Tsh $amounting, Muda uliotuma: $timeM, Muda ulioingia: $timeC, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Airtelmoney au Halopesa."
                     sendSms(floatIn.wakalacontact, sendSms)
                 }else if(floatIn.comment=="LARGE"){
                     val sendSms =
-                        "Kiwango chako cha juu ni Tsh $maxamount. Muamala No: ${floatIn.transid}, Kiasi: Tsh $amounting, Muda uliotuma: $timeM, Muda ulioingia: $timeC, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Mpesa au Halopesa."
+                        "Kiwango chako cha juu ni Tsh $maxamount. Muamala No: ${floatIn.transid}, Kiasi: Tsh $amounting, Muda uliotuma: $timeM, Muda ulioingia: $timeC, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Airtelmoney au Halopesa."
                     sendSms(floatIn.wakalacontact, sendSms)
                 }
 
