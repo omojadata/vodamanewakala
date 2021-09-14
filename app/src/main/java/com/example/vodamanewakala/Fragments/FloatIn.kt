@@ -275,7 +275,7 @@ class FloatIn : Fragment() {
             val timeM = getTime(floatIn.madeAt)
             val timeC = getTime(floatIn.createdAt)
             val sendSms =
-                "Muamala No: ${floatIn.transid}, Kiasi: Tsh $amounting, Muda uliotuma: $timeM, Muda ulioingia: $timeC, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Mpesa au Halopesa"
+                "Muamala No: ${floatIn.transid}, Kiasi: Tsh $amounting, Muda uliotuma: $timeM, Muda ulioingia: $timeC, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Airtelmoney au Halopesa"
             sendSms(floatIn.wakalacontact, sendSms)
         } else if (floatIn.status == 2 ) {
             //large
