@@ -86,14 +86,10 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
     fun floatInUpdate(floatIn: FloatIn): Job =
         viewModelScope.launch {
             if (checkFloatIn(floatIn.networksms)) {
-                Log.e("wakalafloatin", "name")
+
                 //GET VARIBLES
                 val (amount, name, balance, transid) = getFloatIn(floatIn.networksms)
 
-                Log.e("wakalafloatin",amount)
-                Log.e("wakalafloatin", name)
-                Log.e("wakalafloatin", balance)
-                Log.e("wakalafloatin", transid)
                 //CHECK IF TRANSACTION EXISTS
                 val searchFloatInDuplicate = repository.searchFloatInDuplicate(transid)
                 if (searchFloatInDuplicate) {
