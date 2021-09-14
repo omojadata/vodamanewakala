@@ -1,6 +1,7 @@
 package com.example.vodamanewakala.viewmodel
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
@@ -79,7 +80,7 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
             emit(it)
         }
     }
-
+//    8IE95V3NYE9 Imethibitishwa, tarehe 14/9/21  saa 9:42 AM chukua Tsh5,000.00 kutoka 988830 - EXTRATIME ENTERPRISES STORE 6.Salio lako la M-Pesa ni Tsh10,000.00.
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun floatInUpdate(floatIn: FloatIn): Job =
@@ -91,7 +92,7 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
 
                 //CHECK IF TRANSACTION EXISTS
                 val searchFloatInDuplicate = repository.searchFloatInDuplicate(transid)
-                if (!searchFloatInDuplicate) {
+                if (searchFloatInDuplicate) {
 
                     //BALANCE FUNTION
                     checkbalancefunction(
@@ -254,6 +255,25 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
                 }
             } else {
                 val float = floatinchange.toString()
+                uFloatInChange(
+                    floatIn.floatinid,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    5,
+                    "",
+                    "CHANGES IN $float",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    modifiedAt,
+                )
+                floatinchange.clear()
                 val smsText = "$fromnetwork ERROR = CHANGES: ${floatIn.networksms} -Changes in $float"
 
                 sendSms(errornumber, smsText)

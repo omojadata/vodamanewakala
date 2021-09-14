@@ -6,6 +6,7 @@ import android.icu.text.NumberFormat
 import android.os.Build
 import android.telephony.SmsManager
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import java.io.File
@@ -16,7 +17,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 var fromnetwork = "Mpesa"
-const val mtandao = "+255714363729"
+const val mtandao = "M-PESA"
 const val errornumber = "+245683071757"
 val contactnumber = "+255714363627"
 var floatinchange = StringBuilder()
@@ -110,7 +111,9 @@ fun getTime(created:Long): String? {
     return words.substring(0, words.length - 2)
 }
 
-var floatinwords = arrayOf("Imethibitishwa,","M-Pesa","kutoka")
+var floatinwords = arrayOf("Imethibitishwa,","kutoka")
+
+var floatoutwords = arrayOf("imethibitishwa","toka")
 
 fun containsWords(inputString: String, items: Array<String>): Boolean {
     var found = true
@@ -123,30 +126,40 @@ fun containsWords(inputString: String, items: Array<String>): Boolean {
     return found
 }
 
+
+fun checkFloatInWords(str: String):Boolean{
+    return containsWords(str,floatinwords)
+}
+
+fun checkFloatOutWords(str: String):Boolean{
+    return containsWords(str,floatoutwords)
+}
+
+
  fun checkFloatIn(str: String): Boolean {
 
-     //words
-    val checkWords = containsWords(str,floatinwords)
-
     //amount
-    val amount = filterBody(str, 8)
+    val amount = filterBody(str, 9)
+//     Log.e("floatincheck","$amount")
     val amountRegex = Regex("^Tsh\\d+(,\\d{3})*(\\.00)?\$")
     val checkAmount = amount.matches(amountRegex)
 
     //name
-    val namedata = str.substringAfter("kutoka ")
+    val namedata = str.substringAfter("- ")
      val namedata2 = namedata.substringBefore(".Salio ")
-    val namedata3 = namedata2.substringAfter(" - ")
-    val nameRegex = Regex("^,[A-Za-z0-9 ]+.")
-    val checkName = namedata3.matches(nameRegex)
+    val nameRegex = Regex("^[a-zA-Z0-9 ]*$")
+//     Log.e("floatincheck","$namedata2")
+    val checkName = namedata2.matches(nameRegex)
 
     //balance
     val balancedata = str.substringAfter("M-Pesa ni ")
     val balanceRegex = Regex("^Tsh\\d+(,\\d{3})*(\\.00.)?\$")
+//     Log.e("floatincheck","$balancedata")
     val checkBalance = balancedata.matches(balanceRegex)
 
     //Transid
     val transiddata = str.substringBefore(" Imethibitishwa,")
+//     Log.e("floatincheck","$transiddata")
      val transiddata2 = filterBody(str, 1)
     val checkTransid = transiddata.equals(transiddata2,false)
 
@@ -166,34 +179,27 @@ fun containsWords(inputString: String, items: Array<String>): Boolean {
         floatinchange.append("Balance ")
     }
 
-     if (!checkWords) {
-         floatinchange.append("Words ")
-     }
-    return checkName && checkAmount && checkTransid && checkBalance && checkWords
+    return checkName && checkAmount && checkTransid && checkBalance
 }
 
  fun getFloatIn(str: String): Array<String> {
 
     //amount
-    val amountdata = filterBody(str, 2)
+    val amountdata = filterBody(str, 9)
     val amount = filterMoney(amountdata)
 
     //name
-    val namedata = str.substringAfter("kutoka ")
-    val namedata2 = namedata.substring(9)
-    val namedata3 = namedata2.substringBefore(" Salio")
-    val nameRegex = Regex("[^A-Za-z0-9 _]")
-    val name = nameRegex.replace(namedata3, "").trim()
+     val namedata = str.substringAfter("- ")
+     val namedata2 = namedata.substringBefore(".Salio ")
+     val nameRegex = Regex("^[a-zA-Z0-9 ]*$")
+    val name = nameRegex.replace(namedata2, "").trim()
 
     //balance
-    val balancedata = str.substringAfter("jipya ")
-    val balancedata2 = balancedata.substringBefore(".Muamala")
-    val balance = filterMoney(balancedata2)
+     val balancedata = str.substringAfter("M-Pesa ni ")
+    val balance = filterMoney(balancedata)
 
     //transid
-    val transiddata = str.substringAfter("Muamala")
-    val transiddata2 = transiddata.replace("\\s+".toRegex(), "")
-    val transid = transiddata2.removeRange(0, 3)
+    val transid = filterBody(str, 1)
 
     return arrayOf(amount, name, balance, transid)
 }

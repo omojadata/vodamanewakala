@@ -46,7 +46,7 @@ class ForegroundSmsService : Service() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createNotificationChannel()
         val notificationIntent = Intent(this, MainActivity::class.java)
@@ -65,7 +65,7 @@ class ForegroundSmsService : Service() {
         startForeground(1, notification)
 
         val smsAddress = intent?.getStringExtra("smsadress").toString()
-        val smsbody = intent?.getStringExtra("smsbody").toString()
+        val smsbody = intent?.getStringExtra("smsbody").toString().replace("\\s+".toRegex(), " ")
         val smsTime = intent?.getStringExtra("smstime").toString()
 
         val firstword = filterBody(smsbody, 1)
@@ -91,7 +91,7 @@ class ForegroundSmsService : Service() {
             if (smsAddress == mtandao) {
 
                 //CHECK IF FIRST WORD IS "UMEPOKEA"
-                if (firstword == floatinWord) {
+                if (checkFloatInWords(smsbody)) {
 
                     if (checkFloatIn(smsbody)) {
 
@@ -285,11 +285,12 @@ class ForegroundSmsService : Service() {
 
                             val float = floatinchange.toString()
                             val sendText = "$fromnetwork ERROR = CHANGES: FLOATIN: $smsbody -Changes in $float"
+                            floatinchange.clear()
 
                             sendSms(errornumber, sendText)
                         }
                     }
-                } else if (firstword == floatoutWord) {
+                } else if (checkFloatOutWords(smsbody)) {
 
                     if (checkFloatOut(smsbody)) {
 
@@ -668,6 +669,7 @@ class ForegroundSmsService : Service() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun checkbalancefunction(
         balance: String,
         amount: String,
