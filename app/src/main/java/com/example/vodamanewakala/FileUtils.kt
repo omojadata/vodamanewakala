@@ -187,20 +187,18 @@ fun checkFloatOutWords(str: String):Boolean{
     //amount
     val amountdata = filterBody(str, 9)
     val amount = filterMoney(amountdata)
-
+     Log.e("tagigi",amount)
     //name
      val namedata = str.substringAfter("- ")
-     val namedata2 = namedata.substringBefore(".Salio ")
-     val nameRegex = Regex("^[a-zA-Z0-9 ]*$")
-    val name = nameRegex.replace(namedata2, "").trim()
-
+     val name = namedata.substringBefore(".Salio ")
+Log.e("tagigi",name)
     //balance
      val balancedata = str.substringAfter("M-Pesa ni ")
     val balance = filterMoney(balancedata)
-
+     Log.e("tagigi",balance)
     //transid
     val transid = filterBody(str, 1)
-
+     Log.e("tagigi",transid)
     return arrayOf(amount, name, balance, transid)
 }
 

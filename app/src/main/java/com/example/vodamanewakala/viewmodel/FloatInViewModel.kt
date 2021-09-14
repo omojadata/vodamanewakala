@@ -86,10 +86,14 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
     fun floatInUpdate(floatIn: FloatIn): Job =
         viewModelScope.launch {
             if (checkFloatIn(floatIn.networksms)) {
-
+                Log.e("wakalafloatin", "name")
                 //GET VARIBLES
                 val (amount, name, balance, transid) = getFloatIn(floatIn.networksms)
 
+                Log.e("wakalafloatin",amount)
+                Log.e("wakalafloatin", name)
+                Log.e("wakalafloatin", balance)
+                Log.e("wakalafloatin", transid)
                 //CHECK IF TRANSACTION EXISTS
                 val searchFloatInDuplicate = repository.searchFloatInDuplicate(transid)
                 if (searchFloatInDuplicate) {
@@ -106,14 +110,14 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
 
                     //CHECK IF WAKALA EXISTS
                     val searchWakala = repository.searchWakala(name)
-
+//                 Log.e("wakalafloatin",searchWakala.toString())
                     if (searchWakala != null) {
                         val timeDiff = floatIn.createdAt - floatIn.madeAt
 
                         val wakalaKeyId = searchWakala.wakalaid
                         val wakalacontact = searchWakala.contact
-                        val fromwakalaname = searchWakala.airtelname
-                        val fromwakalacode = searchWakala.airtelmoney
+                        val fromwakalaname = searchWakala.vodaname
+                        val fromwakalacode = searchWakala.mpesa
 
                         val currentamount = amount.toInt()
 

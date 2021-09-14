@@ -240,6 +240,7 @@ class FloatIn : Fragment() {
                 //send text to wakala for large order/lateorder
             }
             3 -> {
+                getFloatIn(floatIn.networksms)
                 Toast.makeText(context, "This three ${floatIn.comment}", Toast.LENGTH_SHORT).show()
             }
             4 -> {
