@@ -56,7 +56,7 @@ class ForegroundSmsService : Service() {
         )
         val notification = NotificationCompat.Builder(this, CHANNELID)
             .setContentTitle("MANE WAKALA IS ACTIVE")
-            .setContentText("AIRTEL")
+            .setContentText("VODACOM")
             .setAutoCancel(false)
             .setOngoing(true)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -87,7 +87,7 @@ class ForegroundSmsService : Service() {
             val repository = MobileRepository(dao)
             val dataStorePreference = DataStorePreference(application)
 
-            //CHECK IF SMS IF FROM AIRTELMONEY
+            //CHECK IF SMS IF FROM mpesa
             if (smsAddress == mtandao) {
 
                 //CHECK IF FIRST WORD IS "UMEPOKEA"
@@ -114,8 +114,8 @@ class ForegroundSmsService : Service() {
 
                                 val wakalaKeyId = searchWakala.wakalaid
                                 val wakalacontact = searchWakala.contact
-                                val fromwakalaname = searchWakala.airtelname
-                                val fromwakalacode = searchWakala.airtelmoney
+                                val fromwakalaname = searchWakala.vodaname
+                                val fromwakalacode = searchWakala.mpesa
                                 val maxamount = searchWakala.maxamount
 
                                 val currentamount = amount.toInt()
