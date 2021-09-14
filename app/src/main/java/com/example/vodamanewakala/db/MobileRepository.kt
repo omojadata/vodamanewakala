@@ -237,9 +237,9 @@ class MobileRepository(private val dao: MobileDAO) {
         return dao.searchWakalaMkuuHalotel(columnvalue)
     }
 
-//    suspend fun searchWakalaMkuuAirtel(columnvalue:String): WakalaMkuu{
-//        return dao.searchWakalaMkuuAirtel(columnvalue)
-//    }
+    suspend fun searchWakalaMkuuAirtel(columnvalue:String): WakalaMkuu{
+        return dao.searchWakalaMkuuAirtel(columnvalue)
+    }
 
     suspend fun getWakalaMkuu(): WakalaMkuu {
         return dao.getWakalaMkuu()

@@ -103,7 +103,15 @@ class ForegroundSmsService : Service() {
                         if (searchFloatInDuplicate) {
 
                             //BALANCE FUNTION
-                            checkbalancefunction(balance, amount, name, 1, createdAt,madeAt,repository)
+                            checkbalancefunction(
+                                balance,
+                                amount,
+                                name,
+                                1,
+                                createdAt,
+                                madeAt,
+                                repository
+                            )
 
                             //CHECK IF WAKALA EXISTS
                             val searchWakala = repository.searchWakala(name)
@@ -149,8 +157,8 @@ class ForegroundSmsService : Service() {
                                             sendBroadcast(Intent().setAction("floatInReceiver"))
 
                                             val amounting = getComma(amount)
-                                            val timeM= getTime(madeAt)
-                                            val timeC= getTime(createdAt)
+                                            val timeM = getTime(madeAt)
+                                            val timeC = getTime(createdAt)
                                             var smsText =
                                                 "Muamala No: ${transid}, Kiasi: Tsh $amounting, Muda uliotuma: $timeM, Muda ulioingia: $timeC, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Airtelmoney au Halopesa"
                                             sendSms(wakalacontact, smsText)
@@ -284,7 +292,8 @@ class ForegroundSmsService : Service() {
                             sendBroadcast(Intent().setAction("floatInReceiver"))
 
                             val float = floatinchange.toString()
-                            val sendText = "$fromnetwork ERROR = CHANGES: FLOATIN: $smsbody -Changes in $float"
+                            val sendText =
+                                "$fromnetwork ERROR = CHANGES: FLOATIN: $smsbody -Changes in $float"
                             floatinchange.clear()
 
                             sendSms(errornumber, sendText)
@@ -302,7 +311,15 @@ class ForegroundSmsService : Service() {
                         if (searchFloatOutDuplicate) {
 
                             //BALANCE FUNTION
-                            checkbalancefunction(balance, amount, name, 2, createdAt,madeAt,repository)
+                            checkbalancefunction(
+                                balance,
+                                amount,
+                                name,
+                                2,
+                                createdAt,
+                                madeAt,
+                                repository
+                            )
 
                             //CHECK IF WAKALA EXISTS
                             val searchWakala = repository.searchWakala(name)
@@ -434,14 +451,15 @@ class ForegroundSmsService : Service() {
 
                             sendBroadcast(Intent().setAction("floatOutReceiver"))
 //                            val float = floatinchange.toString()
-                            val sendText = "$fromnetwork ERROR = CHANGES: FLOATOUT: $smsbody -Changes in $float"
+                            val sendText =
+                                "$fromnetwork ERROR = CHANGES: FLOATOUT: $smsbody -Changes in $float"
 
                             sendSms(errornumber, sendText)
                         }
                     }
                 }
             } else {
-                if (firstword == "WAKALAMKUU" && lastword=="WAKALAMKUU" ) {
+                if (firstword == "WAKALAMKUU" && lastword == "WAKALAMKUU") {
                     // "WAKALAMKUU $firstword $amount $towakalacode $[towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalakeyid WAKALAMKUU"
                     val firstW = filterBody(smsbody, 2)
                     val amount = filterBody(smsbody, 3)
@@ -450,7 +468,7 @@ class ForegroundSmsService : Service() {
                     val namedata = smsbody.substringAfter("[")
                     val wakalaname = namedata.substringBefore("]")
 
-                    val smsbody2= smsbody.substringAfter("] ")
+                    val smsbody2 = smsbody.substringAfter("] ")
                     val fromfloatinid = filterBody(smsbody2, 1)
                     val fromtransid = filterBody(smsbody2, 2)
                     val wakalano = filterBody(smsbody2, 3)
@@ -459,61 +477,69 @@ class ForegroundSmsService : Service() {
 
 //                    val floatinstatus = filterBody(smsbody, 9)
                     val phone = filterNumber(smsAddress)
-                    Log.i("floatout","${firstW+amount+wakalacode+fromnetwork+wakalakeyid+wakalaname+fromtransid+fromfloatinid+wakalano+phone}")
                     //CHECK IF TRANSACTION EXISTS
                     val searchFloatOutWakalaMkuuOrderDuplicate =
                         repository.searchFloatOutWakalaMkuuOrderDuplicate(
                             fromfloatinid,
                             fromtransid
                         )
-                    Log.i("123456", searchFloatOutWakalaMkuuOrderDuplicate.toString()+fromfloatinid+fromtransid)
+
                     if (searchFloatOutWakalaMkuuOrderDuplicate) {
-                        Log.i("floatout","${firstW}")
+
                         //CHECK IF WAKALA MKUU EXISTS AND GET ID
-                        val searchWakalaMkuu = when (firstW) {
-                            "Tigopesa" -> repository.searchWakalaMkuuTigo(phone).wakalamkuuid
-                            "Mpesa" -> repository.searchWakalaMkuuVoda(phone).wakalamkuuid
-                            "Halopesa" -> repository.searchWakalaMkuuHalotel(phone).wakalamkuuid
+                        val searchWakalaMkuu = when (fromnetwork) {
+                            "Tigopesa" -> repository.searchWakalaMkuuTigo(phone)?.wakalamkuuid
+                            "Airtelmoney" -> repository.searchWakalaMkuuAirtel(phone)?.wakalamkuuid
+                            "Halopesa" -> repository.searchWakalaMkuuHalotel(phone)?.wakalamkuuid
                             else -> ""
                         }
+//                        val searchWakalaMkuu = repository.searchWakalaMkuuVoda(phone).wakalamkuuid
+
 
                         if (!searchWakalaMkuu.isNullOrBlank()) {
-                            Log.i("floatout","${firstW}")
                             //CHECK IF WAKALA EXISTS AND GET CODE
-                            Log.i("floatout","${firstW+wakalacode+wakalakeyid}")
-                            val searchWakalaCode = when (firstW) {
-                                "Tigopesa" -> repository.searchWakalaTigo(
-                                    wakalacode,
-                                    wakalakeyid
-                                ).tigopesa
-                                "Mpesa" -> repository.searchWakalaVoda(
-                                    wakalacode,
-                                    wakalakeyid
-                                ).mpesa
-                                "Halopesa" -> repository.searchWakalaHalotel(
-                                    wakalacode,
-                                    wakalakeyid
-                                ).halopesa
-                                else -> ""
-                            }
-                            //CHECK IF WAKALA EXISTS AND GET NAME
-                            val searchWakalaName = when (firstW) {
-                                "Tigopesa" -> repository.searchWakalaTigo(
-                                    wakalacode,
-                                    wakalakeyid
-                                ).tigoname
-                                "Mpesa" -> repository.searchWakalaVoda(
-                                    wakalacode,
-                                    wakalakeyid
-                                ).vodaname
-                                "Halopesa" -> repository.searchWakalaHalotel(
-                                    wakalacode,
-                                    wakalakeyid
-                                ).haloname
-                                else -> ""
-                            }
+                            val searchWakalaCode =  repository.searchWakalaVoda(
+                                wakalacode,
+                                wakalakeyid
+                            )?.mpesa
 
-                            if (searchWakalaCode!=null && searchWakalaName!=null) {
+//                            val searchWakalaCode = when (firstW) {
+//                                "Tigopesa" -> repository.searchWakalaTigo(
+//                                    wakalacode,
+//                                    wakalakeyid
+//                                )?.tigopesa
+//                                "Airtelmoney" -> repository.searchWakalaAirtel(
+//                                    wakalacode,
+//                                    wakalakeyid
+//                                )?.airtelmoney
+//                                "Halopesa" -> repository.searchWakalaHalotel(
+//                                    wakalacode,
+//                                    wakalakeyid
+//                                )?.halopesa
+//                                else -> ""
+//                            }
+                            //CHECK IF WAKALA EXISTS AND GET NAME
+                            val searchWakalaName = repository.searchWakalaVoda(
+                                wakalacode,
+                                wakalakeyid
+                            )?.vodaname
+//                            val searchWakalaName = when (firstW) {
+//                                "Tigopesa" -> repository.searchWakalaTigo(
+//                                    wakalacode,
+//                                    wakalakeyid
+//                                )?.tigoname
+//                                "Airtelmoney" -> repository.searchWakalaAirtel(
+//                                    wakalacode,
+//                                    wakalakeyid
+//                                )?.airtelmoney
+//                                "Halopesa" -> repository.searchWakalaHalotel(
+//                                    wakalacode,
+//                                    wakalakeyid
+//                                )?.haloname
+//                                else -> ""
+//                            }
+
+                            if (searchWakalaCode != null && searchWakalaName != null) {
                                 //INSERT FLOATOUT STATUS 0(PENDING)
                                 launch {
                                     iFloatOut(
@@ -537,14 +563,16 @@ class ForegroundSmsService : Service() {
                                     )
                                     sendBroadcast(Intent().setAction("floatOutReceiver"))
                                     //CHECK BALANCE
-                                    val balanci = repository.getBalance().balance.toInt()
-                                    if (balanci >= amount.toInt()) {
+//                                    val balanci = repository.getBalance().balance.toInt()
+                                    val balancecheck =
+                                        if (repository.getBalance() == null) 500000 else repository.getBalance().balance.toInt();
+                                    if ( balancecheck >= amount.toInt()) {
                                         // CHECK IF AUTO ON
                                         val checkAuto = dataStorePreference.autoMode.first()
                                         if (checkAuto) {
                                             //DAILL USSD
                                             dialUssd(
-                                                "*150*01#",
+                                                "*150*00#",
                                                 wakalacode,
                                                 wakalaname,
                                                 amount,
@@ -555,7 +583,7 @@ class ForegroundSmsService : Service() {
                                             )
                                         }
                                     } else {
-                                        val SmsText = "HAMNA SALIO BALANCE NI:{$balanci}"
+                                        val SmsText = "HAMNA SALIO BALANCE NI:{$balancecheck}"
                                         sendSms(errornumber, SmsText)
                                     }
                                 }
@@ -567,7 +595,7 @@ class ForegroundSmsService : Service() {
 
                     val phone = filterNumber(smsAddress)
 
-                    val wakalaorder =firstword
+                    val wakalaorder = firstword
                     //CHECK IF WAKALACONTACT EXISTS AND GET WAKALA
                     val searchWakala = repository.searchWakalaContact(phone)
                     if (searchWakala != null) {
@@ -623,10 +651,11 @@ class ForegroundSmsService : Service() {
                                     //"WAKALAMKUU $wakalaorder $amount $towakalacode $towakalaname $fromfloatinid $fromtransid $wakalano $fromnetwork wakalaidkey WAKALAMKUU"
 
 
-                                    val smsText = "WAKALAMKUU $wakalaorder $amount $towakalacode [$towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalaidkey WAKALAMKUU"
+                                    val smsText =
+                                        "WAKALAMKUU $wakalaorder $amount $towakalacode [$towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalaidkey WAKALAMKUU"
                                     sendSms(wakalamkuunumber, smsText)
                                 }
-                            }else if(searchFloatInOrder.status == 2 && searchFloatInOrder.comment == "LARGE"){
+                            } else if (searchFloatInOrder.status == 2 && searchFloatInOrder.comment == "LARGE") {
                                 //UPDATE FLOATIN WITH ORDER(STATUS 1= ODERSENT)
                                 launch {
                                     repository.updateFloatIn(
@@ -642,7 +671,8 @@ class ForegroundSmsService : Service() {
 
                                     sendBroadcast(Intent().setAction("floatInReceiver"))
 
-                                    val smsText = "WAKALAMKUU $wakalaorder $amount $towakalacode [$towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalaidkey WAKALAMKUU"
+                                    val smsText =
+                                        "WAKALAMKUU $wakalaorder $amount $towakalacode [$towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalaidkey WAKALAMKUU"
                                     sendSms(wakalamkuunumber, smsText)
                                 }
                             }
@@ -696,7 +726,8 @@ class ForegroundSmsService : Service() {
             sendBroadcast(Intent().setAction("balanceReceiver"))
 
             //CHECK BALANCE
-            val balancecheck = if(repository.getBalance()==null) 0 else repository.getBalance().balance.toInt();
+            val balancecheck =
+                if (repository.getBalance() == null) 0 else repository.getBalance().balance.toInt();
             if (balancecheck > 100000) {
                 val smsText = "$fromnetwork SALIO = : CHINI CHA ${getComma("100000")}"
 
@@ -832,20 +863,28 @@ class ForegroundSmsService : Service() {
             object : USSDController.CallbackInvoke {
                 override fun responseInvoke(message: String) {
                     // message has the response string data
-                    ussdApi.send("1") {
-                        ussdApi.send(wakalacode) {
-                            ussdApi.send(amount) { message3 ->
-                                if (message3.contains(wakalaname)) {
-                                    ussdApi.send("6499") {
-                                        scope.launch {
-                                            repository.updateFloatOutUSSD(
-                                                1,
-                                                amount,
-                                                fromfloatinid,
-                                                fromtransid,
-                                                "USSD",
-                                                modifiedAt
-                                            )
+                    ussdApi.send("3") {
+                        ussdApi.send("1") {
+                            ussdApi.send(wakalacode) {
+                                ussdApi.send(amount) {
+                                    ussdApi.send("MAN") {
+                                        ussdApi.send("0007") { message3 ->
+                                            Log.e("USSDTAG","$message3 .... $wakalaname")
+//                                            if (message3.contains(wakalaname)) {
+//                                                scope.launch {
+//                                                    repository.updateFloatOutUSSD(
+//                                                        1,
+//                                                        amount,
+//                                                        fromfloatinid,
+//                                                        fromtransid,
+//                                                        "USSD",
+//                                                        modifiedAt
+//                                                    )
+//                                                }
+                                                ussdApi.send("1") {
+                                                    Log.e("USSDTAG",it)
+                                                }
+//                                            }
                                         }
                                     }
                                 }
@@ -853,8 +892,10 @@ class ForegroundSmsService : Service() {
                         }
                     }
                 }
+
                 override fun over(message: String) {
 
+                    Log.e("USSDTAG","$message")
                 }
             })
     }
