@@ -205,31 +205,28 @@ fun checkFloatOutWords(str: String):Boolean{
 
 fun checkFloatOut(str: String): Boolean {
 
-    val i = str.contains("Umetuma")
-
     //amount
-    val amount = filterBody(str, 2)
-    val amountRegex = Regex("^\\d+(,\\d{3})*(\\.00)?\$")
+    val amount = filterBody(str, 7)
+    val amountRegex = Regex("^Tsh\\d+(,\\d{3})*(\\.00)?\$")
     val checkAmount = amount.matches(amountRegex)
 
     //name
-    val namedata = str.substringAfter("kwenda ")
-    val namedata2 = namedata.substring(9)
-    val namedata3 = namedata2.substringBefore("Makato")
-    val nameRegex = Regex("^,[A-Za-z0-9 ]+.")
-    val checkName = namedata3.matches(nameRegex)
+    val namedata = str.substringAfter("- ")
+    val namedata2 = namedata.substringBefore(". Salio ")
+    val nameRegex = Regex("^[a-zA-Z0-9 ]*$")
+    val checkName = namedata2.matches(nameRegex)
 
     //balance
-    val balancedata = str.substringAfter("Salio Jipya Tsh ")
-    val balancedata2 = balancedata.substringBefore(".Muamala")
-    val balanceRegex = Regex("^\\d+(,\\d{3})*(\\.00)?\$")
-    val checkBalance = balancedata2.matches(balanceRegex)
+    val balancedata = str.substringAfter("akaunti yako ni ")
+    val balanceRegex = Regex("^Tsh\\d+(,\\d{3})*(\\.00)?\$")
+    val checkBalance = balancedata.matches(balanceRegex)
 
     //Transid
-    val transiddata = str.substringAfter("Muamala")
-    val transiddata3 = transiddata.replace("\\s+".toRegex(), "")
-    val transidRegex = Regex("^No.PP\\d{6}.\\d{4}.[A-Z0-9]{6}")
-    val checkTransid = transiddata3.matches(transidRegex)
+    val transiddata = str.substringBefore(" imethibitishwa")
+//     Log.e("floatincheck","$transiddata")
+    val transiddata2 = filterBody(str, 1)
+    val checkTransid = transiddata.equals(transiddata2,false)
+
 
     if (!checkName) {
         floatoutchange.append("Name ")
@@ -247,34 +244,29 @@ fun checkFloatOut(str: String): Boolean {
         floatoutchange.append("Balance ")
     }
 
-    return checkName && checkAmount && checkTransid && checkBalance && i
+    return checkName && checkAmount && checkTransid && checkBalance
 }
 
 
 
  fun getFloatOut(str: String): Array<String> {
-    //amount
-    val amountdata = filterBody(str, 2)
-    val amount = filterMoney(amountdata)
 
-    //name
-    val namedata = str.substringAfter("kwenda ")
-    val namedata2 = namedata.substring(9)
-    val namedata3 = namedata2.substringBefore("Makato")
-    val nameRegex = Regex("[^A-Za-z0-9 _]")
-    val name = nameRegex.replace(namedata3, "").trim()
+     //amount
+     val amountdata = filterBody(str, 7)
+     val amount = filterMoney(amountdata)
 
-    //balance
-    val balancedata = str.substringAfter("Salio Jipya Tsh ")
-    val balancedata2 = balancedata.substringBefore(".Muamala")
-    val balance = filterMoney(balancedata2)
+     //name
+     val namedata = str.substringAfter("- ")
+     val name = namedata.substringBefore(". Salio ")
 
-    //transid
-    val transiddata = str.substringAfter("Muamala")
-    val transiddata3 = transiddata.replace("\\s+".toRegex(), "")
-    val transid = transiddata3.removeRange(0, 3)
+     //balance
+     val balancedata = str.substringAfter("akaunti yako ni ")
+     val balance = filterMoney(balancedata)
 
+     //transid
+     val transid = filterBody(str, 1)
 
-    return arrayOf(amount, name, balance, transid)
+     return arrayOf(amount, name, balance, transid)
+
 }
 

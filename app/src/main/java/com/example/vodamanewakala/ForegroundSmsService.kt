@@ -455,6 +455,7 @@ class ForegroundSmsService : Service() {
                                 "$fromnetwork ERROR = CHANGES: FLOATOUT: $smsbody -Changes in $float"
 
                             sendSms(errornumber, sendText)
+                            floatoutchange.clear()
                         }
                     }
                 }
