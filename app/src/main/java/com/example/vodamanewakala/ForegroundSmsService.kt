@@ -852,9 +852,10 @@ class ForegroundSmsService : Service() {
         fromtransid: String,
         repository: MobileRepository,
     ) {
+        var ussdchange = StringBuilder()
         val map = HashMap<String, List<String>>()
         map["KEY_LOGIN"] = Arrays.asList("USSD code running...")
-        map["KEY_ERROR"] = Arrays.asList("problema", "problem", "error", "null")
+        map["KEY_ERROR"] = Arrays.asList("Connection problem or invalid MMI code", "problem", "error", "null")
         val ussdApi = USSDController
         USSDController.callUSSDOverlayInvoke(
             this,
@@ -863,28 +864,23 @@ class ForegroundSmsService : Service() {
             object : USSDController.CallbackInvoke {
                 override fun responseInvoke(message: String) {
                     // message has the response string data
+                    ussdchange.append("*150*01#")
                     ussdApi.send("3") {
+                        ussdchange.append("3")
                         ussdApi.send("1") {
+                            ussdchange.append("1")
                             ussdApi.send(wakalacode) {
+                                ussdchange.append("code")
                                 ussdApi.send(amount) {
+                                    ussdchange.append("amount")
                                     ussdApi.send("MAN") {
+                                        ussdchange.append("Muhudumu")
                                         ussdApi.send("0007") { message3 ->
-                                            Log.e("USSDTAG","$message3 .... $wakalaname")
-//                                            if (message3.contains(wakalaname)) {
-//                                                scope.launch {
-//                                                    repository.updateFloatOutUSSD(
-//                                                        1,
-//                                                        amount,
-//                                                        fromfloatinid,
-//                                                        fromtransid,
-//                                                        "USSD",
-//                                                        modifiedAt
-//                                                    )
-//                                                }
-                                                ussdApi.send("1") {
-                                                    Log.e("USSDTAG",it)
+                                            ussdchange.append("PIN")
+                                               ussdApi.send("1") {
+                                                    ussdchange.append("Accept")
+                                                    Log.e("USSDTAG1",it)
                                                 }
-//                                            }
                                         }
                                     }
                                 }
@@ -894,8 +890,35 @@ class ForegroundSmsService : Service() {
                 }
 
                 override fun over(message: String) {
+                    Log.e("USSDTAG2",ussdchange.toString())
+                    if (message.contains("Ombi lako limetumwa")){
+                        scope.launch {
+                                                    repository.updateFloatOutUSSD(
+                                                        1,
+                                                        amount,
+                                                        fromfloatinid,
+                                                        fromtransid,
+                                                        "USSD",
+                                                        modifiedAt
+                                                    )
+                                                }
+                    }else if (message.contains("Connection problem or invalid MMI code")){
+                        if (ussdchange.toString().contains("PIN")){
+                            scope.launch {
+                                repository.updateFloatOutUSSD(
+                                    1,
+                                    amount,
+                                    fromfloatinid,
+                                    fromtransid,
+                                    "USSD",
+                                    modifiedAt
+                                )
+                            }
+                        }
+                    }
+                    ussdchange.clear()
 
-                    Log.e("USSDTAG","$message")
+                    Log.e("USSDTAG2","$message")
                 }
             })
     }
