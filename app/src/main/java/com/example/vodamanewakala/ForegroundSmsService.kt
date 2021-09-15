@@ -494,12 +494,13 @@ class ForegroundSmsService : Service() {
                             "Halopesa" -> repository.searchWakalaMkuuHalotel(phone)?.wakalamkuuid
                             else -> ""
                         }
-//                        val searchWakalaMkuu = repository.searchWakalaMkuuVoda(phone).wakalamkuuid
 
+//                       val searchWakalaMkuu = repository.searchWakalaMkuuVoda(phone).wakalamkuuid
 
                         if (!searchWakalaMkuu.isNullOrBlank()) {
                             //CHECK IF WAKALA EXISTS AND GET CODE
-                            val searchWakalaCode =  repository.searchWakalaVoda(
+                            val searchWakalaCode = repository.searchWakalaVoda(
+                                wakalaname,
                                 wakalacode,
                                 wakalakeyid
                             )?.mpesa
@@ -521,6 +522,7 @@ class ForegroundSmsService : Service() {
 //                            }
                             //CHECK IF WAKALA EXISTS AND GET NAME
                             val searchWakalaName = repository.searchWakalaVoda(
+                                wakalaname,
                                 wakalacode,
                                 wakalakeyid
                             )?.vodaname
@@ -567,7 +569,7 @@ class ForegroundSmsService : Service() {
 //                                    val balanci = repository.getBalance().balance.toInt()
                                     val balancecheck =
                                         if (repository.getBalance() == null) 500000 else repository.getBalance().balance.toInt();
-                                    if ( balancecheck >= amount.toInt()) {
+                                    if (balancecheck >= amount.toInt()) {
                                         // CHECK IF AUTO ON
                                         val checkAuto = dataStorePreference.autoMode.first()
                                         if (checkAuto) {
@@ -856,7 +858,8 @@ class ForegroundSmsService : Service() {
         var ussdchange = StringBuilder()
         val map = HashMap<String, List<String>>()
         map["KEY_LOGIN"] = Arrays.asList("USSD code running...")
-        map["KEY_ERROR"] = Arrays.asList("Connection problem or invalid MMI code", "problem", "error", "null")
+        map["KEY_ERROR"] =
+            Arrays.asList("Connection problem or invalid MMI code", "problem", "error", "null")
         val ussdApi = USSDController
         USSDController.callUSSDOverlayInvoke(
             this,
@@ -867,21 +870,29 @@ class ForegroundSmsService : Service() {
                     // message has the response string data
                     ussdchange.append("*150*01#")
                     ussdApi.send("3") {
-                        ussdchange.append("3")
+                        ussdchange.append(" 3")
                         ussdApi.send("1") {
-                            ussdchange.append("1")
+                            ussdchange.append(" 1")
                             ussdApi.send(wakalacode) {
-                                ussdchange.append("code")
+                                ussdchange.append(" code")
                                 ussdApi.send(amount) {
-                                    ussdchange.append("amount")
+                                    ussdchange.append(" amount")
                                     ussdApi.send("MAN") {
-                                        ussdchange.append("Muhudumu")
+                                        ussdchange.append(" muhudumu")
                                         ussdApi.send("0007") { message3 ->
-                                            ussdchange.append("PIN")
-                                               ussdApi.send("1") {
-                                                    ussdchange.append("Accept")
-                                                    Log.e("USSDTAG1",it)
+                                            ussdchange.append(" PIN")
+                                            if (message3.contains(wakalaname)) {
+                                                ussdchange.append(" Accept")
+                                                ussdApi.send("1") {
+                                                    Log.e("USSDTAG1", it)
                                                 }
+                                            } else {
+                                                ussdchange.clear()
+                                                ussdchange.append("Cancel")
+                                                ussdApi.send("2") {
+                                                    Log.e("USSDTAG1", it)
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -891,20 +902,22 @@ class ForegroundSmsService : Service() {
                 }
 
                 override fun over(message: String) {
-                    Log.e("USSDTAG2",ussdchange.toString())
-                    if (message.contains("Ombi lako limetumwa")){
-                        scope.launch {
-                                                    repository.updateFloatOutUSSD(
-                                                        1,
-                                                        amount,
-                                                        fromfloatinid,
-                                                        fromtransid,
-                                                        "USSD",
-                                                        modifiedAt
-                                                    )
-                                                }
-                    }else if (message.contains("Connection problem or invalid MMI code")){
-                        if (ussdchange.toString().contains("PIN")){
+                    Log.e("USSDTAG2", ussdchange.toString())
+                    if (message.contains("Ombi lako limetumwa")) {
+                        if (ussdchange.toString().contains("Accept")){
+                            scope.launch {
+                                repository.updateFloatOutUSSD(
+                                    1,
+                                    amount,
+                                    fromfloatinid,
+                                    fromtransid,
+                                    "USSD",
+                                    modifiedAt
+                                )
+                            }
+                        }
+                    } else if (message.contains("Connection problem or invalid MMI code")) {
+                        if (ussdchange.toString().contains("Accept")) {
                             scope.launch {
                                 repository.updateFloatOutUSSD(
                                     1,
@@ -918,8 +931,7 @@ class ForegroundSmsService : Service() {
                         }
                     }
                     ussdchange.clear()
-
-                    Log.e("USSDTAG2","$message")
+                    Log.e("USSDTAG2", "$message")
                 }
             })
     }

@@ -206,7 +206,7 @@ fun checkFloatOutWords(str: String):Boolean{
 fun checkFloatOut(str: String): Boolean {
 
     //amount
-    val amount = filterBody(str, 7)
+    val amount = filterBody(str, 8)
     val amountRegex = Regex("^Tsh\\d+(,\\d{3})*(\\.00)?\$")
     val checkAmount = amount.matches(amountRegex)
 

@@ -198,14 +198,14 @@ interface MobileDAO {
     @Query("SELECT * FROM wakala_table WHERE contact = :columnvalue AND status = 1 LIMIT 1")
     suspend fun searchWakalaContact(columnvalue: String): Wakala
 
-    @Query("SELECT * FROM wakala_table WHERE tigopesa = :columnvalue AND wakalaid=:wakalaidkey AND status = 1 LIMIT 1")
+    @Query("SELECT * FROM wakala_table WHERE  tigopesa = :columnvalue AND wakalaid=:wakalaidkey AND status = 1 LIMIT 1")
     suspend fun searchWakalaTigo(columnvalue: String, wakalaidkey: String): Wakala
 
     @Query("SELECT * FROM wakala_table WHERE airtelmoney = :columnvalue AND wakalaid=:wakalaidkey AND status = 1 LIMIT 1")
     suspend fun searchWakalaAirtel(columnvalue: String, wakalaidkey: String): Wakala
 
-    @Query("SELECT * FROM wakala_table WHERE mpesa = :columnvalue AND wakalaid=:wakalaidkey AND status = 1 LIMIT 1")
-    suspend fun searchWakalaVoda(columnvalue: String, wakalaidkey: String): Wakala
+    @Query("SELECT * FROM wakala_table WHERE vodaname = :columnname AND mpesa = :columnvalue AND wakalaid=:wakalaidkey AND status = 1 LIMIT 1")
+    suspend fun searchWakalaVoda(columnname: String,columnvalue: String, wakalaidkey: String): Wakala
 
     @Query("SELECT * FROM wakala_table WHERE halopesa = :columnvalue AND wakalaid=:wakalaidkey AND status = 1 LIMIT 1")
     suspend fun searchWakalaHalotel(columnvalue: String, wakalaidkey: String): Wakala
