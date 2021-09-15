@@ -888,7 +888,6 @@ class ForegroundSmsService : Service() {
                                                 }
                                             } else {
                                                 ussdchange.clear()
-                                                ussdchange.append("Cancel")
                                                 ussdApi.send("2") {
                                                     Log.e("USSDTAG1", it)
                                                 }
