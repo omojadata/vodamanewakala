@@ -95,12 +95,12 @@ interface MobileDAO {
         modifiedAt: Long
     ): Int
 
-    @Query("UPDATE floatout_table SET status = :status, fromfloatinid=:fromfloatinid, comment=:comment,modifiedat=:modifiedat ,networksms=:networksms WHERE amount =:amount AND wakalaidkey=:wakalaidkey")
+    @Query("UPDATE floatout_table SET status = :status, transid=:transid, comment=:comment,modifiedat=:modifiedat ,networksms=:networksms WHERE amount =:amount AND wakalaname=:wakalaname")
     suspend fun updateFloatOut(
         status: Int,
         amount: String,
-        wakalaidkey: String,
-        fromfloatinid: String,
+        wakalaname: String,
+        transid: String,
         networksms: String,
         comment: String,
         modifiedat: Long
@@ -119,7 +119,7 @@ interface MobileDAO {
     @Query("SELECT NOT EXISTS(SELECT * FROM floatout_table WHERE transid = :transid LIMIT 1)")
     suspend fun searchFloatOutDuplicate(transid: String): Boolean
 
-    @Query("SELECT EXISTS(SELECT * FROM floatout_table WHERE wakalaname = :wakalaname AND status=0 LIMIT 1)")
+    @Query("SELECT EXISTS(SELECT * FROM floatout_table WHERE wakalaname = :wakalaname AND (status=0 OR status=1) LIMIT 1)")
     suspend fun searchFloatOutWakalaOrder(wakalaname: String): Boolean
 
     @Query("SELECT NOT EXISTS (SELECT * FROM floatout_table WHERE fromfloatinid = :fromfloatinid AND fromtransid = :fromtransid LIMIT 1)")

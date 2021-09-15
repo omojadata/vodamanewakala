@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.vodamanewakala.db.*
@@ -308,8 +309,12 @@ class ForegroundSmsService : Service() {
 
                         //CHECK IF TRANSACTION(transactionid) EXISTS
                         val searchFloatOutDuplicate = repository.searchFloatOutDuplicate(transid)
+
                         if (searchFloatOutDuplicate) {
 
+                            Log.e("namename",amount)
+                            Log.e("namename",balance)
+                            Log.e("namename",name)
                             //BALANCE FUNTION
                             checkbalancefunction(
                                 balance,
@@ -323,11 +328,13 @@ class ForegroundSmsService : Service() {
 
                             //CHECK IF WAKALA EXISTS
                             val searchWakala = repository.searchWakala(name)
+                            Log.e("SANTA",name)
                             if (searchWakala != null) {
 
                                 // CHECK IF FLOATOUT WAKALA ORDER EXISTS (floatinid(sent bu wakala mkuu order)) EXISTS
                                 val searchFloatOutWakalaOrder =
                                     repository.searchFloatOutWakalaOrder(name)
+                                Log.e("SANTA2",searchFloatOutWakalaOrder.toString())
                                 if (searchFloatOutWakalaOrder) {
 
                                     //UPDATE FLOATOUT STATUS 2(DONE)
@@ -337,10 +344,10 @@ class ForegroundSmsService : Service() {
                                         uFloatOut(
                                             2,
                                             amount,
-                                            wakalaKeyId,
+                                            name,
                                             transid,
-                                            "DONE",
                                             smsbody,
+                                            "DONE",
                                             modifiedAt,
                                             repository
                                         )
@@ -361,8 +368,8 @@ class ForegroundSmsService : Service() {
                                             "",
                                             3,
                                             "UNKNOWN ORDER",
-                                            "",
                                             smsbody,
+                                            "",
                                             createdAt,
                                             modifiedAt,
                                             madeAt,
@@ -388,8 +395,8 @@ class ForegroundSmsService : Service() {
                                         "",
                                         3,
                                         "UNKWOWN WAKALA",
-                                        "",
                                         smsbody,
+                                        "",
                                         createdAt,
                                         modifiedAt,
                                         madeAt,
@@ -413,8 +420,8 @@ class ForegroundSmsService : Service() {
                                     "",
                                     3,
                                     "DUPLICATE SMS",
-                                    "",
                                     smsbody,
+                                    "",
                                     createdAt,
                                     modifiedAt,
                                     madeAt,
@@ -441,8 +448,8 @@ class ForegroundSmsService : Service() {
                                 "",
                                 4,
                                 "CHANGES IN $float",
-                                "",
                                 smsbody,
+                                "",
                                 createdAt,
                                 modifiedAt,
                                 madeAt,
@@ -557,8 +564,8 @@ class ForegroundSmsService : Service() {
                                         fromtransid,
                                         0,
                                         "PENDING",
-                                        wakalano,
                                         "",
+                                        wakalano,
                                         createdAt,
                                         modifiedAt,
                                         madeAt,
@@ -568,7 +575,7 @@ class ForegroundSmsService : Service() {
                                     //CHECK BALANCE
 //                                    val balanci = repository.getBalance().balance.toInt()
                                     val balancecheck =
-                                        if (repository.getBalance() == null) 500000 else repository.getBalance().balance.toInt();
+                                        if (repository.getBalance() == null) 50000 else repository.getBalance().balance.toInt();
                                     if (balancecheck >= amount.toInt()) {
                                         // CHECK IF AUTO ON
                                         val checkAuto = dataStorePreference.autoMode.first()
@@ -586,6 +593,11 @@ class ForegroundSmsService : Service() {
                                             )
                                         }
                                     } else {
+                                        Toast.makeText(
+                                            applicationContext,
+                                            "HAMNA SALIO BALANCE NI:{$balancecheck}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                         val SmsText = "HAMNA SALIO BALANCE NI:{$balancecheck}"
                                         sendSms(errornumber, SmsText)
                                     }
@@ -794,8 +806,8 @@ class ForegroundSmsService : Service() {
         fromtransid: String,
         status: Int,
         comment: String,
-        wakalanumber: String,
         networksms: String,
+        wakalanumber: String,
         createdAt: Long,
         modifiedAt: Long,
         madeAt: Long,
@@ -815,8 +827,8 @@ class ForegroundSmsService : Service() {
                 fromtransid,
                 status,
                 comment,
-                wakalanumber,
                 networksms,
+                wakalanumber,
                 createdAt,
                 modifiedAt,
                 madeAt
@@ -827,21 +839,21 @@ class ForegroundSmsService : Service() {
     private suspend fun uFloatOut(
         status: Int,
         amount: String,
-        wakalaKeyId: String,
+        wakalaname: String,
         transid: String,
-        comment: String,
         networksms: String,
-        modifiedAt: Long,
+        comment: String,
+        modifiedat: Long,
         repository: MobileRepository
     ) {
         repository.updateFloatOut(
             status,
             amount,
-            wakalaKeyId,
+            wakalaname,
             transid,
-            comment,
             networksms,
-            modifiedAt
+            comment,
+            modifiedat
         )
     }
 

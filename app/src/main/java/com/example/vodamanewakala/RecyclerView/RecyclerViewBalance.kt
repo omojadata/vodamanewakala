@@ -12,6 +12,8 @@ import com.example.vodamanewakala.R
 import com.example.vodamanewakala.databinding.BalanceitemlistBinding
 
 import com.example.vodamanewakala.db.Balance
+import com.example.vodamanewakala.getComma
+import com.example.vodamanewakala.getDate
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -55,20 +57,9 @@ class MyBalanceViewHolder(val binding: BalanceitemlistBinding): RecyclerView.Vie
 
         binding.sectionone.text="Tsh "+getComma(balance.balance)
         binding.sectiontwo.text=balance.floatname+"\n"+"Tsh "+getComma(balance.floatamount)
-        binding.sectionthree.text=getdate(balance.createdAt)
+        binding.sectionthree.text=getDate(balance.createdAt)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun getComma(i:String):String?{
-        val ans=NumberFormat.getNumberInstance(Locale.US).format(i.toInt())
-        return ans.toString()
-    }
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getdate(created:Long): String? {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        val instant = Instant.ofEpochMilli(created)
-        val date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-        return formatter.format(date).toString()
-    }
+
 
 }

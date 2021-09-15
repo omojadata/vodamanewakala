@@ -146,19 +146,19 @@ class MobileRepository(private val dao: MobileDAO) {
     suspend fun updateFloatOut(
         status: Int,
         amount: String,
-        wakalaidkey: String,
-        fromfloatinid: String,
-        comment: String,
+        wakalaname: String,
+        transid: String,
         networksms: String,
+        comment: String,
         modifiedat: Long
     ) {
         return dao.updateFloatOut(
             status,
             amount,
-            wakalaidkey,
-            fromfloatinid,
-            comment,
+            wakalaname,
+            transid,
             networksms,
+            comment,
             modifiedat
         )
     }

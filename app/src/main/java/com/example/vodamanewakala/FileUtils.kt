@@ -252,7 +252,7 @@ fun checkFloatOut(str: String): Boolean {
  fun getFloatOut(str: String): Array<String> {
 
      //amount
-     val amountdata = filterBody(str, 7)
+     val amountdata = filterBody(str, 8)
      val amount = filterMoney(amountdata)
 
      //name
