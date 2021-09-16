@@ -2,9 +2,11 @@ package com.example.vodamanewakala
 
 //import android.databinding.DataBindingUtil
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.asLiveData
@@ -13,6 +15,8 @@ import com.example.vodamanewakala.Adapter.ViewPageAdapter
 import com.example.vodamanewakala.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.romellfudi.ussdlibrary.USSDApi
+import com.romellfudi.ussdlibrary.USSDController
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -65,15 +69,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.autoLay.setOnCheckedChangeListener { buttonView, isChecked ->
+            var check1= USSDController.verifyAccesibilityAccess(this)
+            var check2= USSDController.verifyOverLay(this)
             GlobalScope.launch {
+
                 if (isChecked){
-                    dataStorePreference.saveAutoMode(
-                        true
-                    )
+                    if(check1&&check2){
+                        dataStorePreference.saveAutoMode(
+                            true
+                        )
+                    }else{
+                        binding.autoLay.isChecked==false
+                    }
+
                 }else{
-                    dataStorePreference.saveAutoMode(
-                        false
-                    )
+                    if(check1&&check2){
+                    }else{
+                        dataStorePreference.saveAutoMode(
+                            false
+                        )
+                        binding.autoLay.isChecked==false
+                    }
                 }
             }
         }

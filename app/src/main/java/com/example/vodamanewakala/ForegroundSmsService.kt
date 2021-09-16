@@ -312,9 +312,6 @@ class ForegroundSmsService : Service() {
 
                         if (searchFloatOutDuplicate) {
 
-                            Log.e("namename",amount)
-                            Log.e("namename",balance)
-                            Log.e("namename",name)
                             //BALANCE FUNTION
                             checkbalancefunction(
                                 balance,
@@ -512,42 +509,12 @@ class ForegroundSmsService : Service() {
                                 wakalakeyid
                             )?.mpesa
 
-//                            val searchWakalaCode = when (firstW) {
-//                                "Tigopesa" -> repository.searchWakalaTigo(
-//                                    wakalacode,
-//                                    wakalakeyid
-//                                )?.tigopesa
-//                                "Airtelmoney" -> repository.searchWakalaAirtel(
-//                                    wakalacode,
-//                                    wakalakeyid
-//                                )?.airtelmoney
-//                                "Halopesa" -> repository.searchWakalaHalotel(
-//                                    wakalacode,
-//                                    wakalakeyid
-//                                )?.halopesa
-//                                else -> ""
-//                            }
                             //CHECK IF WAKALA EXISTS AND GET NAME
                             val searchWakalaName = repository.searchWakalaVoda(
                                 wakalaname,
                                 wakalacode,
                                 wakalakeyid
                             )?.vodaname
-//                            val searchWakalaName = when (firstW) {
-//                                "Tigopesa" -> repository.searchWakalaTigo(
-//                                    wakalacode,
-//                                    wakalakeyid
-//                                )?.tigoname
-//                                "Airtelmoney" -> repository.searchWakalaAirtel(
-//                                    wakalacode,
-//                                    wakalakeyid
-//                                )?.airtelmoney
-//                                "Halopesa" -> repository.searchWakalaHalotel(
-//                                    wakalacode,
-//                                    wakalakeyid
-//                                )?.haloname
-//                                else -> ""
-//                            }
 
                             if (searchWakalaCode != null && searchWakalaName != null) {
                                 //INSERT FLOATOUT STATUS 0(PENDING)
@@ -595,7 +562,7 @@ class ForegroundSmsService : Service() {
                                     } else {
                                         Toast.makeText(
                                             applicationContext,
-                                            "HAMNA SALIO BALANCE NI:{$balancecheck}",
+                                            "HAMNA SALIO",
                                             Toast.LENGTH_SHORT
                                         ).show()
                                         val SmsText = "HAMNA SALIO BALANCE NI:{$balancecheck}"
@@ -694,18 +661,6 @@ class ForegroundSmsService : Service() {
                         }
                     }
                 }
-// (firstword == "USSD") {
-//                    dialUssd(
-//                        "*150*01#",
-//                        "wakalacode",
-//                        "wakalaname",
-//                        "amount",
-//                        modifiedAt,
-//                        "fromfloatinid",
-//                        "fromtransid",
-//                        repository
-//                    )
-//                }
             }
         }
         stopForeground(true)
@@ -743,9 +698,11 @@ class ForegroundSmsService : Service() {
             //CHECK BALANCE
             val balancecheck =
                 if (repository.getBalance() == null) 0 else repository.getBalance().balance.toInt();
-            if (balancecheck > 100000) {
-                val smsText = "$fromnetwork SALIO = : CHINI CHA ${getComma("100000")}"
-
+            if (balancecheck < 100000) {
+                val smsText = "$fromnetwork SALIO = : CHINI CHA ${getComma(balancecheck.toString())}"
+                Log.e("hasms",balancecheck.toString())
+                Log.e("hasms",repository.getBalance().balance)
+                Toast.makeText(applicationContext, "This foreground", Toast.LENGTH_SHORT).show()
                 sendSms(errornumber, smsText)
             }
         }
@@ -880,7 +837,7 @@ class ForegroundSmsService : Service() {
             object : USSDController.CallbackInvoke {
                 override fun responseInvoke(message: String) {
                     // message has the response string data
-                    ussdchange.append("*150*01#")
+                    ussdchange.append("*150*00#")
                     ussdApi.send("3") {
                         ussdchange.append(" 3")
                         ussdApi.send("1") {
@@ -913,9 +870,10 @@ class ForegroundSmsService : Service() {
                 }
 
                 override fun over(message: String) {
-                    Log.e("USSDTAG2", ussdchange.toString())
                     if (message.contains("Ombi lako limetumwa")) {
+                        Log.e("USSDTAG2", ussdchange.toString())
                         if (ussdchange.toString().contains("Accept")){
+                            Log.e("USSDTAG22", ussdchange.toString())
                             scope.launch {
                                 repository.updateFloatOutUSSD(
                                     1,
@@ -928,7 +886,9 @@ class ForegroundSmsService : Service() {
                             }
                         }
                     } else if (message.contains("Connection problem or invalid MMI code")) {
+                        Log.e("USSDTAG2", "$message")
                         if (ussdchange.toString().contains("Accept")) {
+                            Log.e("USSDTAG2", "$message")
                             scope.launch {
                                 repository.updateFloatOutUSSD(
                                     1,
@@ -942,7 +902,7 @@ class ForegroundSmsService : Service() {
                         }
                     }
                     ussdchange.clear()
-                    Log.e("USSDTAG2", "$message")
+
                 }
             })
     }
