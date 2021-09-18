@@ -35,13 +35,16 @@ data class FloatOut (
         val networksms: String,
         @ColumnInfo(name="wakalanumber")
         val wakalanumber: String,
-        @ColumnInfo(name="createdAt")
-        val createdAt: Long,
-        @ColumnInfo(name="modifiedAt")
-        val modifiedAt: Long,
-        @ColumnInfo(name="madeAt")
-        val madeAt: Long,
-
+        @ColumnInfo(name="createdat")
+        val createdat: Long,
+        @ColumnInfo(name="modifiedat")
+        val modifiedat: Long,
+        @ColumnInfo(name="madeatorder")
+        val madeatorder: Long,
+        @ColumnInfo(name="madeatfloat")
+        val madeatfloat: Long,
+        @ColumnInfo(name="deletestatus")
+        val deletestatus: Int,
 
 //
 //        floatoutid: Int,

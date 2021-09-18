@@ -1,5 +1,6 @@
 package com.example.vodamanewakala
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.icu.text.NumberFormat
@@ -7,8 +8,16 @@ import android.os.Build
 import android.telephony.SmsManager
 import android.text.format.DateUtils
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
+import com.example.vodamanewakala.db.Balance
+import com.example.vodamanewakala.db.FloatIn
+import com.example.vodamanewakala.db.FloatOut
+import com.example.vodamanewakala.db.MobileRepository
+import com.romellfudi.ussdlibrary.USSDController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.time.Instant
 import java.time.LocalDateTime
@@ -17,7 +26,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 var fromnetwork = "Mpesa"
-const val mtandao = "M-PESA"
+const val mtandao = "+255714363727"
 const val errornumber = "+255683071757"
 val contactnumber = "+255714363727"
 var floatinchange = StringBuilder()
@@ -270,3 +279,97 @@ fun checkFloatOut(str: String): Boolean {
 
 }
 
+suspend fun dialUssd(
+    ussdCode: String,
+    wakalacode: String,
+    wakalaname: String,
+    amount: String,
+    modifiedAt: Long,
+    fromfloatinid: String,
+    fromtransid: String,
+    repository: MobileRepository,
+    context: Context,
+    scope: CoroutineScope
+) {
+    var ussdchange = StringBuilder()
+    val map = HashMap<String, List<String>>()
+    map["KEY_LOGIN"] = Arrays.asList("USSD code running...")
+    map["KEY_ERROR"] =
+        Arrays.asList("Connection problem or invalid MMI code", "problem", "error", "null")
+    val ussdApi = USSDController
+    USSDController.callUSSDOverlayInvoke(
+        context,
+        ussdCode,
+        map,
+        object : USSDController.CallbackInvoke {
+            override fun responseInvoke(message: String) {
+                // message has the response string data
+                ussdchange.append("*150*00#")
+                ussdApi.send("3") {
+                    ussdchange.append(" 3")
+                    ussdApi.send("1") {
+                        ussdchange.append(" 1")
+                        ussdApi.send(wakalacode) {
+                            ussdchange.append(" code")
+                            ussdApi.send(amount) {
+                                ussdchange.append(" amount")
+                                ussdApi.send("MAN") {
+                                    ussdchange.append(" muhudumu")
+                                    ussdApi.send("0007") { message3 ->
+                                        ussdchange.append(" PIN")
+                                        if (message3.contains(wakalaname)) {
+                                            ussdchange.append(" Accept")
+                                            ussdApi.send("1") {
+                                                Log.e("USSDTAG1", it)
+                                            }
+                                        } else {
+                                            ussdchange.clear()
+                                            ussdApi.send("2") {
+                                                Log.e("USSDTAG1", it)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun over(message: String) {
+                if (message.contains("Ombi lako limetumwa")) {
+                    Log.e("USSDTAG2", ussdchange.toString())
+                    if (ussdchange.toString().contains("Accept")) {
+                        Log.e("USSDTAG22", ussdchange.toString())
+                        scope.launch {
+                            repository.updateFloatOutUSSD(
+                                1,
+                                amount,
+                                fromfloatinid,
+                                fromtransid,
+                                "USSD",
+                                modifiedAt
+                            )
+                        }
+                    }
+                } else if (message.contains("Connection problem or invalid MMI code")) {
+                    Log.e("USSDTAG2", "$message")
+                    if (ussdchange.toString().contains("Accept")) {
+                        Log.e("USSDTAG2", "$message")
+                        scope.launch {
+                            repository.updateFloatOutUSSD(
+                                1,
+                                amount,
+                                fromfloatinid,
+                                fromtransid,
+                                "USSD",
+                                modifiedAt
+                            )
+                        }
+                    }
+                }
+                ussdchange.clear()
+
+            }
+        })
+}

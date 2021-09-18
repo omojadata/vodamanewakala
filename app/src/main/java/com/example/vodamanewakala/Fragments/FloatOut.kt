@@ -264,7 +264,6 @@ class FloatOut : Fragment() {
     }
 
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun allClicked(floatOut: FloatOut) {
         if (floatOut.status == 0) {
@@ -273,10 +272,10 @@ class FloatOut : Fragment() {
             //send USSD
         } else if (floatOut.status == 1) {
             //sendUSSD
-            if (floatOutViewModel.modifiedAt >= floatOut.modifiedAt + 300000) {
+            if (floatOutViewModel.modifiedAt >= floatOut.modifiedat + 300000) {
                 floatOutViewModel.USSD(floatOut)
             } else {
-                val diff = floatOut.modifiedAt + 300000
+                val diff = floatOut.modifiedat + 300000
                 Toast.makeText(
                     context,
                     "Wait till ${getDate(diff)}",
@@ -312,10 +311,10 @@ class FloatOut : Fragment() {
     fun exportMoviesWithDirectorsToCSVFile(csvFile: File) {
         csvWriter().open(csvFile, append = false) {
             // Header
-            writeRow(listOf("[floatoutid]","[transid]","[amount]","[wakalaname]","[wakalacode]","[network]","[wakalaidkey]","[wakalamkuu]","[fromfloatinid]","[fromtransid]","[status]","[comment]","[networksms]","[wakalanumber]","[createdAt]","[modifiedAt]","[madeAt]"))
+            writeRow(listOf("floatoutid","transid","amount","wakalaname","wakalacode","network","wakalaidkey","wakalamkuu","fromfloatinid","fromtransid","status","comment","networksms","wakalanumber","createdAt","modifiedat","madeatorder","madeatfloat","deletestatus"))
 
             adapter.floatOutList.forEachIndexed { index,x ->
-                writeRow(listOf(x.floatoutid,x.transid,x.amount,x.wakalaname,x.wakalacode,x.network,x.wakalaidkey,x.wakalamkuu,x.fromfloatinid,x.fromtransid,x.status,x.comment,x.networksms,x.wakalanumber,x.createdAt,x.modifiedAt,x.madeAt))
+                writeRow(listOf(x.floatoutid,x.transid,x.amount,x.wakalaname,x.wakalacode,x.network,x.wakalaidkey,x.wakalamkuu,x.fromfloatinid,x.fromtransid,x.status,x.comment,x.networksms,x.wakalanumber,x.createdat,x.modifiedat,x.madeatorder,x.madeatfloat,x.deletestatus))
             }
         }
     }

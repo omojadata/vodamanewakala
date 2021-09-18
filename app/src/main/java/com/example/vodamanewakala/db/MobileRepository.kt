@@ -123,7 +123,7 @@ class MobileRepository(private val dao: MobileDAO) {
         status: Int,
         comment: String,
         wakalanumber: String,
-        modifiedAt: Long
+        modifiedat: Long
     ): Int {
         return dao.updateFloatOutChange(
             floatoutid,
@@ -139,7 +139,7 @@ class MobileRepository(private val dao: MobileDAO) {
             status,
             comment,
             wakalanumber,
-            modifiedAt
+            modifiedat
         )
     }
 
@@ -150,7 +150,8 @@ class MobileRepository(private val dao: MobileDAO) {
         transid: String,
         networksms: String,
         comment: String,
-        modifiedat: Long
+        modifiedat: Long,
+        madeatfloat:Long
     ) {
         return dao.updateFloatOut(
             status,
@@ -159,7 +160,20 @@ class MobileRepository(private val dao: MobileDAO) {
             transid,
             networksms,
             comment,
-            modifiedat
+            modifiedat,
+            madeatfloat
+        )
+    }
+
+    suspend fun deleteFloatOutChange(
+        deletestatus: Int,
+        modifiedat:Long,
+        floatoutid:Int,
+    ) {
+        return dao.deleteFloatOutChange(
+            deletestatus,
+            modifiedat,
+            floatoutid
         )
     }
 
@@ -204,9 +218,10 @@ class MobileRepository(private val dao: MobileDAO) {
         dao.insertBalance(balance)
     }
 
-    suspend fun getBalance(): Balance {
+    suspend fun getBalance():List<String>{
         return dao.getBalance()
     }
+
 
 
     //WAKALAMKUU

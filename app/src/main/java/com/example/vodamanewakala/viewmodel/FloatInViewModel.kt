@@ -1,7 +1,9 @@
 package com.example.vodamanewakala.viewmodel
 
+import android.content.Intent
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
@@ -106,9 +108,8 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
 
                     //CHECK IF WAKALA EXISTS
                     val searchWakala = repository.searchWakala(name)
-//                 Log.e("wakalafloatin",searchWakala.toString())
+
                     if (searchWakala != null) {
-                        val timeDiff = floatIn.createdAt - floatIn.madeAt
 
                         val wakalaKeyId = searchWakala.wakalaid
                         val wakalacontact = searchWakala.contact
@@ -125,7 +126,6 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
 
                                 //INSERT FLOATIN STATUS 0( WAITING ORDER)
                                 launch {
-
                                     uFloatInChange(
                                         floatIn.floatinid,
                                         transid,
@@ -155,7 +155,6 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
                                 }
                             } else {
                                 launch {
-
                                     uFloatInChange(
                                         floatIn.floatinid,
                                         transid,
@@ -233,7 +232,6 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
                     }
                 } else {
                     //UPDATE FLOAT IN TRANSACTION ALREADY EXISTS
-
                     uFloatInChange(
                         floatIn.floatinid,
                         transid,
@@ -336,7 +334,6 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
 
 
 
-
     @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun checkbalancefunction(
         balance: String,
@@ -347,7 +344,6 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
         madeAt: Long
     ) {
         viewModelScope.launch {
-
                 //INSERT BALANCE
                 repository.insertBalance(
                     Balance(
@@ -362,16 +358,11 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
                 )
                 //CHECK BALANCE
                 val balancecheck =
-                    if (repository.getBalance() == null) 0 else repository.getBalance().balance.toInt();
+                    if (repository.getBalance() == null) 0 else repository.getBalance()[0].toInt();
                 if (balancecheck > 100000) {
                     val smsText = "$fromnetwork SALIO = : CHINI CHA ${getComma("100000")}"
-
                     sendSms(errornumber, smsText)
-                    //send balance error
-                    //turn off error
                 }
-
-
         }
     }
 

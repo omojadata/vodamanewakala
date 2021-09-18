@@ -68,16 +68,16 @@ interface MobileDAO {
 
 
     //FLOATOUT
-    @Query("SELECT * FROM floatout_table WHERE madeAt >= 0+ strftime('s','now','localtime','start of day') ORDER BY madeAt DESC")
+    @Query("SELECT * FROM floatout_table WHERE madeAtOrder >= 0+ strftime('s','now','localtime','start of day') AND deletestatus=0 ORDER BY modifiedat DESC")
     fun floatOut(): Flow<List<FloatOut>>
 
-    @Query("SELECT * FROM floatout_table WHERE status = :status AND madeAt >= 0+ strftime('s','now','localtime','start of day')  ORDER BY madeAt DESC")
+    @Query("SELECT * FROM floatout_table WHERE status = :status AND madeAtOrder >= 0+ strftime('s','now','localtime','start of day') AND deletestatus=0  ORDER BY modifiedat DESC")
     fun floatOutFilter(status: Int): Flow<List<FloatOut>>
 
     @Insert
     suspend fun insertFloatOut(FloatOut: FloatOut)
 
-    @Query("UPDATE floatout_table SET transid=:transid,amount=:amount,wakalaname=:wakalaname,wakalacode=:wakalacode,network=:network,wakalaidkey=:wakalaidkey,wakalamkuu=:wakalamkuu,fromfloatinid=:fromfloatinid,fromtransid=:fromtransid,status=:status,comment=:comment,wakalanumber=:wakalanumber,modifiedAt=:modifiedAt WHERE floatoutid=:floatoutid AND status=4")
+    @Query("UPDATE floatout_table SET transid=:transid,amount=:amount,wakalaname=:wakalaname,wakalacode=:wakalacode,network=:network,wakalaidkey=:wakalaidkey,wakalamkuu=:wakalamkuu,fromfloatinid=:fromfloatinid,fromtransid=:fromtransid,status=:status,comment=:comment,wakalanumber=:wakalanumber,modifiedat=:modifiedat WHERE floatoutid=:floatoutid AND status=4")
     suspend fun updateFloatOutChange(
         floatoutid: Int,
         transid: String,
@@ -92,10 +92,17 @@ interface MobileDAO {
         status: Int,
         comment: String,
         wakalanumber: String,
-        modifiedAt: Long
+        modifiedat: Long,
     ): Int
 
-    @Query("UPDATE floatout_table SET status = :status, transid=:transid, comment=:comment,modifiedat=:modifiedat ,networksms=:networksms WHERE amount =:amount AND wakalaname=:wakalaname")
+    @Query("UPDATE floatout_table SET deletestatus = :deletestatus,modifiedat=:modifiedat WHERE floatoutid=:floatoutid AND status=4")
+    suspend fun deleteFloatOutChange(
+        deletestatus: Int,
+        modifiedat:Long,
+        floatoutid:Int,
+    )
+
+    @Query("UPDATE floatout_table SET status = :status, transid=:transid, comment=:comment,modifiedat=:modifiedat ,networksms=:networksms,madeatfloat=:madeatfloat WHERE amount =:amount AND wakalaname=:wakalaname AND (fromfloatinid is NOT NULL or fromfloatinid != '' ) AND (transid is NULL or transid = '' ) AND (madeatorder > :madeatfloat) AND (status=0 OR status=4 OR status=1) AND floatoutid IN(SELECT floatoutid from floatout_table ORDER BY floatoutid ASC)")
     suspend fun updateFloatOut(
         status: Int,
         amount: String,
@@ -103,8 +110,10 @@ interface MobileDAO {
         transid: String,
         networksms: String,
         comment: String,
-        modifiedat: Long
+        modifiedat: Long,
+        madeatfloat:Long
     )
+
 
     @Query("UPDATE floatout_table SET status = :status ,comment=:comment,modifiedat=:modifiedat  WHERE amount =:amount AND fromfloatinid=:fromfloatinid AND fromtransid=:fromtransid AND status=0")
     suspend fun updateFloatOutUSSD(
@@ -136,8 +145,8 @@ interface MobileDAO {
     @Insert
     suspend fun insertBalance(balance: Balance)
 
-    @Query("SELECT * FROM balance_table WHERE  status = 1 ORDER BY madeAt DESC LIMIT 1")
-    suspend fun getBalance(): Balance
+    @Query("SELECT balance FROM balance_table WHERE  status = 1 ORDER BY madeAt DESC LIMIT 1")
+    suspend fun getBalance(): List<String>
 
 
     //WAKALAMKUU

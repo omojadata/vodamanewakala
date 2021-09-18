@@ -325,7 +325,7 @@ class ForegroundSmsService : Service() {
 
                             //CHECK IF WAKALA EXISTS
                             val searchWakala = repository.searchWakala(name)
-                            Log.e("SANTA",name)
+//                            Log.e("SANTA",name)
                             if (searchWakala != null) {
 
                                 // CHECK IF FLOATOUT WAKALA ORDER EXISTS (floatinid(sent bu wakala mkuu order)) EXISTS
@@ -346,6 +346,7 @@ class ForegroundSmsService : Service() {
                                             smsbody,
                                             "DONE",
                                             modifiedAt,
+                                            madeAt,
                                             repository
                                         )
                                         sendBroadcast(Intent().setAction("floatOutReceiver"))
@@ -369,6 +370,7 @@ class ForegroundSmsService : Service() {
                                             "",
                                             createdAt,
                                             modifiedAt,
+                                            0,
                                             madeAt,
                                             repository
                                         )
@@ -396,6 +398,7 @@ class ForegroundSmsService : Service() {
                                         "",
                                         createdAt,
                                         modifiedAt,
+                                        0,
                                         madeAt,
                                         repository
                                     )
@@ -421,6 +424,7 @@ class ForegroundSmsService : Service() {
                                     "",
                                     createdAt,
                                     modifiedAt,
+                                    0,
                                     madeAt,
                                     repository
                                 )
@@ -449,6 +453,7 @@ class ForegroundSmsService : Service() {
                                 "",
                                 createdAt,
                                 modifiedAt,
+                                0,
                                 madeAt,
                                 repository
                             )
@@ -536,18 +541,20 @@ class ForegroundSmsService : Service() {
                                         createdAt,
                                         modifiedAt,
                                         madeAt,
+                                        0,
                                         repository
                                     )
                                     sendBroadcast(Intent().setAction("floatOutReceiver"))
                                     //CHECK BALANCE
 //                                    val balanci = repository.getBalance().balance.toInt()
                                     val balancecheck =
-                                        if (repository.getBalance() == null) 50000 else repository.getBalance().balance.toInt();
+                                        if (repository.getBalance() == null) 50000 else repository.getBalance()[0]  .toInt();
                                     if (balancecheck >= amount.toInt()) {
                                         // CHECK IF AUTO ON
                                         val checkAuto = dataStorePreference.autoMode.first()
                                         if (checkAuto) {
                                             //DAILL USSD
+//
                                             dialUssd(
                                                 "*150*00#",
                                                 wakalacode,
@@ -556,7 +563,9 @@ class ForegroundSmsService : Service() {
                                                 modifiedAt,
                                                 fromfloatinid,
                                                 fromtransid,
-                                                repository
+                                                repository,
+                                                applicationContext,
+                                                scope
                                             )
                                         }
                                     } else {
@@ -632,7 +641,6 @@ class ForegroundSmsService : Service() {
                                     sendBroadcast(Intent().setAction("floatInReceiver"))
                                     //"WAKALAMKUU $wakalaorder $amount $towakalacode $towakalaname $fromfloatinid $fromtransid $wakalano $fromnetwork wakalaidkey WAKALAMKUU"
 
-
                                     val smsText =
                                         "WAKALAMKUU $wakalaorder $amount $towakalacode [$towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalaidkey WAKALAMKUU"
                                     sendSms(wakalamkuunumber, smsText)
@@ -697,11 +705,11 @@ class ForegroundSmsService : Service() {
 
             //CHECK BALANCE
             val balancecheck =
-                if (repository.getBalance() == null) 0 else repository.getBalance().balance.toInt();
+                if (repository.getBalance() == null) 0 else repository.getBalance()[0].toInt();
             if (balancecheck < 100000) {
                 val smsText = "$fromnetwork SALIO = : CHINI CHA ${getComma(balancecheck.toString())}"
                 Log.e("hasms",balancecheck.toString())
-                Log.e("hasms",repository.getBalance().balance)
+                Log.e("hasms", repository.getBalance().toString())
                 Toast.makeText(applicationContext, "This foreground", Toast.LENGTH_SHORT).show()
                 sendSms(errornumber, smsText)
             }
@@ -765,9 +773,10 @@ class ForegroundSmsService : Service() {
         comment: String,
         networksms: String,
         wakalanumber: String,
-        createdAt: Long,
-        modifiedAt: Long,
-        madeAt: Long,
+        createdat: Long,
+        modifiedat: Long,
+        madeatorder: Long,
+        madeatfloat:Long,
         repository: MobileRepository
     ) {
         repository.insertFloatOut(
@@ -786,9 +795,11 @@ class ForegroundSmsService : Service() {
                 comment,
                 networksms,
                 wakalanumber,
-                createdAt,
-                modifiedAt,
-                madeAt
+                createdat,
+                modifiedat,
+                madeatorder,
+                madeatfloat,
+                0
             )
         )
     }
@@ -801,6 +812,7 @@ class ForegroundSmsService : Service() {
         networksms: String,
         comment: String,
         modifiedat: Long,
+        madeatfloat:Long,
         repository: MobileRepository
     ) {
         repository.updateFloatOut(
@@ -810,101 +822,12 @@ class ForegroundSmsService : Service() {
             transid,
             networksms,
             comment,
-            modifiedat
+            modifiedat,
+            madeatfloat
         )
     }
 
-    private fun dialUssd(
-        ussdCode: String,
-        wakalacode: String,
-        wakalaname: String,
-        amount: String,
-        modifiedAt: Long,
-        fromfloatinid: String,
-        fromtransid: String,
-        repository: MobileRepository,
-    ) {
-        var ussdchange = StringBuilder()
-        val map = HashMap<String, List<String>>()
-        map["KEY_LOGIN"] = Arrays.asList("USSD code running...")
-        map["KEY_ERROR"] =
-            Arrays.asList("Connection problem or invalid MMI code", "problem", "error", "null")
-        val ussdApi = USSDController
-        USSDController.callUSSDOverlayInvoke(
-            this,
-            ussdCode,
-            map,
-            object : USSDController.CallbackInvoke {
-                override fun responseInvoke(message: String) {
-                    // message has the response string data
-                    ussdchange.append("*150*00#")
-                    ussdApi.send("3") {
-                        ussdchange.append(" 3")
-                        ussdApi.send("1") {
-                            ussdchange.append(" 1")
-                            ussdApi.send(wakalacode) {
-                                ussdchange.append(" code")
-                                ussdApi.send(amount) {
-                                    ussdchange.append(" amount")
-                                    ussdApi.send("MAN") {
-                                        ussdchange.append(" muhudumu")
-                                        ussdApi.send("0007") { message3 ->
-                                            ussdchange.append(" PIN")
-                                            if (message3.contains(wakalaname)) {
-                                                ussdchange.append(" Accept")
-                                                ussdApi.send("1") {
-                                                    Log.e("USSDTAG1", it)
-                                                }
-                                            } else {
-                                                ussdchange.clear()
-                                                ussdApi.send("2") {
-                                                    Log.e("USSDTAG1", it)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
 
-                override fun over(message: String) {
-                    if (message.contains("Ombi lako limetumwa")) {
-                        Log.e("USSDTAG2", ussdchange.toString())
-                        if (ussdchange.toString().contains("Accept")){
-                            Log.e("USSDTAG22", ussdchange.toString())
-                            scope.launch {
-                                repository.updateFloatOutUSSD(
-                                    1,
-                                    amount,
-                                    fromfloatinid,
-                                    fromtransid,
-                                    "USSD",
-                                    modifiedAt
-                                )
-                            }
-                        }
-                    } else if (message.contains("Connection problem or invalid MMI code")) {
-                        Log.e("USSDTAG2", "$message")
-                        if (ussdchange.toString().contains("Accept")) {
-                            Log.e("USSDTAG2", "$message")
-                            scope.launch {
-                                repository.updateFloatOutUSSD(
-                                    1,
-                                    amount,
-                                    fromfloatinid,
-                                    fromtransid,
-                                    "USSD",
-                                    modifiedAt
-                                )
-                            }
-                        }
-                    }
-                    ussdchange.clear()
 
-                }
-            })
-    }
 }
 
