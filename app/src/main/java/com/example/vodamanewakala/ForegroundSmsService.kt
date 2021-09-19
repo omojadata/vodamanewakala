@@ -325,7 +325,7 @@ class ForegroundSmsService : Service() {
 
                             //CHECK IF WAKALA EXISTS
                             val searchWakala = repository.searchWakala(name)
-//                            Log.e("SANTA",name)
+                            Log.e("SANTA",name)
                             if (searchWakala != null) {
 
                                 // CHECK IF FLOATOUT WAKALA ORDER EXISTS (floatinid(sent bu wakala mkuu order)) EXISTS
@@ -333,7 +333,7 @@ class ForegroundSmsService : Service() {
                                     repository.searchFloatOutWakalaOrder(name)
                                 Log.e("SANTA2",searchFloatOutWakalaOrder.toString())
                                 if (searchFloatOutWakalaOrder) {
-
+                                    Log.e("SANTA","name")
                                     //UPDATE FLOATOUT STATUS 2(DONE)
                                     val wakalaKeyId = searchWakala.wakalaid
 
@@ -488,6 +488,7 @@ class ForegroundSmsService : Service() {
 //                    val floatinstatus = filterBody(smsbody, 9)
                     val phone = filterNumber(smsAddress)
                     //CHECK IF TRANSACTION EXISTS
+                    Log.e("hasan","1")
                     val searchFloatOutWakalaMkuuOrderDuplicate =
                         repository.searchFloatOutWakalaMkuuOrderDuplicate(
                             fromfloatinid,
@@ -495,7 +496,7 @@ class ForegroundSmsService : Service() {
                         )
 
                     if (searchFloatOutWakalaMkuuOrderDuplicate) {
-
+                        Log.e("hasan","2")
                         //CHECK IF WAKALA MKUU EXISTS AND GET ID
                         val searchWakalaMkuu = when (fromnetwork) {
                             "Tigopesa" -> repository.searchWakalaMkuuTigo(phone)?.wakalamkuuid
@@ -523,6 +524,7 @@ class ForegroundSmsService : Service() {
 
                             if (searchWakalaCode != null && searchWakalaName != null) {
                                 //INSERT FLOATOUT STATUS 0(PENDING)
+                                Log.e("hasan","2")
                                 launch {
                                     iFloatOut(
                                         "",
@@ -547,8 +549,7 @@ class ForegroundSmsService : Service() {
                                     sendBroadcast(Intent().setAction("floatOutReceiver"))
                                     //CHECK BALANCE
 //                                    val balanci = repository.getBalance().balance.toInt()
-                                    val balancecheck =
-                                        if (repository.getBalance() == null) 50000 else repository.getBalance()[0]  .toInt();
+                                    val balancecheck = repository?.getBalance()[0].toInt();
                                     if (balancecheck >= amount.toInt()) {
                                         // CHECK IF AUTO ON
                                         val checkAuto = dataStorePreference.autoMode.first()
@@ -704,8 +705,7 @@ class ForegroundSmsService : Service() {
             sendBroadcast(Intent().setAction("balanceReceiver"))
 
             //CHECK BALANCE
-            val balancecheck =
-                if (repository.getBalance() == null) 0 else repository.getBalance()[0].toInt();
+            val balancecheck = repository?.getBalance()[0].toInt();
             if (balancecheck < 100000) {
                 val smsText = "$fromnetwork SALIO = : CHINI CHA ${getComma(balancecheck.toString())}"
                 Log.e("hasms",balancecheck.toString())

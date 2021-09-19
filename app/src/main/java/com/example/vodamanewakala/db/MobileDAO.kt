@@ -102,7 +102,7 @@ interface MobileDAO {
         floatoutid:Int,
     )
 
-    @Query("UPDATE floatout_table SET status = :status, transid=:transid, comment=:comment,modifiedat=:modifiedat ,networksms=:networksms,madeatfloat=:madeatfloat WHERE amount =:amount AND wakalaname=:wakalaname AND (fromfloatinid is NOT NULL or fromfloatinid != '' ) AND (transid is NULL or transid = '' ) AND (madeatorder > :madeatfloat) AND (status=0 OR status=4 OR status=1) AND floatoutid IN(SELECT floatoutid from floatout_table ORDER BY floatoutid ASC)")
+    @Query("UPDATE floatout_table SET status = :status, transid=:transid, comment=:comment,modifiedat=:modifiedat ,networksms=:networksms,madeatfloat=:madeatfloat WHERE  floatoutid IN(SELECT floatoutid from floatout_table WHERE amount =:amount AND wakalaname=:wakalaname AND (fromfloatinid is NOT NULL or fromfloatinid != '' ) AND (transid is NULL or transid = '' ) AND (madeatorder > :madeatfloat) AND (status=0 OR status=1) ORDER BY floatoutid ASC LIMIT 1)")
     suspend fun updateFloatOut(
         status: Int,
         amount: String,
@@ -114,6 +114,9 @@ interface MobileDAO {
         madeatfloat:Long
     )
 
+
+    @Query("SELECT EXISTS(SELECT * FROM floatout_table WHERE wakalaname = :wakalaname AND (status=0 OR status=1) LIMIT 1)")
+    suspend fun searchFloatOutWakalaOrder(wakalaname: String): Boolean
 
     @Query("UPDATE floatout_table SET status = :status ,comment=:comment,modifiedat=:modifiedat  WHERE amount =:amount AND fromfloatinid=:fromfloatinid AND fromtransid=:fromtransid AND status=0")
     suspend fun updateFloatOutUSSD(
@@ -128,8 +131,6 @@ interface MobileDAO {
     @Query("SELECT NOT EXISTS(SELECT * FROM floatout_table WHERE transid = :transid LIMIT 1)")
     suspend fun searchFloatOutDuplicate(transid: String): Boolean
 
-    @Query("SELECT EXISTS(SELECT * FROM floatout_table WHERE wakalaname = :wakalaname AND (status=0 OR status=1) LIMIT 1)")
-    suspend fun searchFloatOutWakalaOrder(wakalaname: String): Boolean
 
     @Query("SELECT NOT EXISTS (SELECT * FROM floatout_table WHERE fromfloatinid = :fromfloatinid AND fromtransid = :fromtransid LIMIT 1)")
     suspend fun searchFloatOutWakalaMkuuOrderDuplicate(
