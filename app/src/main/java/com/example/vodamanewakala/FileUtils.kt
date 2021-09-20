@@ -55,7 +55,6 @@ fun generateFile(context: Context?, fileName: String): File? {
 fun sendSms(number: String, smstext: String) {
     val sms = SmsManager.getDefault()
     val parts: ArrayList<String> = sms.divideMessage(smstext)
-
     sms.sendMultipartTextMessage(
         number,
         null,
