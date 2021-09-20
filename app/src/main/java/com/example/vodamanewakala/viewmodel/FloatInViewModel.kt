@@ -317,11 +317,12 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
         )
     }
 
-    suspend fun uFloatInLarge(
+    fun uFloatInLarge(
         floatinid: Int,
         comment: String,
         modifiedat: Long
-    ) {
+    ): Job =
+        viewModelScope.launch  {
         repository.updateFloatInLarge(
             floatinid,
             comment,
