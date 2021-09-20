@@ -72,11 +72,6 @@ class ForegroundSmsService : Service() {
         val firstword = filterBody(smsbody, 1)
         val lastword = smsbody.substring(smsbody.lastIndexOf(" ") + 1)
 
-        val floatinWord = "Umepokea"
-        val floatoutWord = "Umetuma"
-
-        val contactnumber = "+255714363623"
-
         val createdAt = System.currentTimeMillis()
         val modifiedAt = System.currentTimeMillis()
         val madeAt = smsTime.toLong()
