@@ -63,7 +63,8 @@ class MobileRepository(private val dao: MobileDAO) {
         towakalacode: String,
         wakalamkuunumber: String,
         towakalaname: String,
-        modifiedat: Long
+        modifiedat: Long,
+        madeatorder:Long
     ): Int {
         return dao.updateFloatIn(
             status,
@@ -73,7 +74,8 @@ class MobileRepository(private val dao: MobileDAO) {
             towakalacode,
             wakalamkuunumber,
             towakalaname,
-            modifiedat
+            modifiedat,
+            madeatorder
         )
     }
 
@@ -89,12 +91,12 @@ class MobileRepository(private val dao: MobileDAO) {
         )
     }
 
-    suspend fun searchFloatInDuplicate(transid: String): Boolean {
-        return dao.searchFloatInDuplicate(transid)
+    suspend fun searchFloatInNotDuplicate(transid: String): Boolean {
+        return dao.searchFloatInNotDuplicate(transid)
     }
 
-    suspend fun searchFloatInOrder(wakalaid: String): FloatIn {
-        return dao.searchFloatInOrder(wakalaid)
+    suspend fun getFloatInOrder(wakalaid: String): FloatIn {
+        return dao.getFloatInOrder(wakalaid)
     }
 
 
@@ -143,6 +145,17 @@ class MobileRepository(private val dao: MobileDAO) {
         )
     }
 
+    suspend fun deleteFloatInChange(
+        modifiedat:Long,
+        floatoutid:Int,
+    ) {
+        return dao.deleteFloatInChange(
+            modifiedat,
+            floatoutid
+        )
+    }
+
+
     suspend fun updateFloatOut(
         status: Int,
         amount: String,
@@ -152,7 +165,7 @@ class MobileRepository(private val dao: MobileDAO) {
         comment: String,
         modifiedat: Long,
         madeatfloat:Long
-    ) {
+    ): Int  {
         return dao.updateFloatOut(
             status,
             amount,
@@ -166,12 +179,10 @@ class MobileRepository(private val dao: MobileDAO) {
     }
 
     suspend fun deleteFloatOutChange(
-        deletestatus: Int,
         modifiedat:Long,
         floatoutid:Int,
     ) {
         return dao.deleteFloatOutChange(
-            deletestatus,
             modifiedat,
             floatoutid
         )
@@ -195,19 +206,18 @@ class MobileRepository(private val dao: MobileDAO) {
         )
     }
 
-    suspend fun searchFloatOutDuplicate(transid: String): Boolean {
-        return dao.searchFloatOutDuplicate(transid)
+    suspend fun searchFloatOutNotDuplicate(transid: String): Boolean {
+        return dao.searchFloatOutNotDuplicate(transid)
     }
 
     suspend fun searchFloatOutWakalaOrder(wakalaname: String): Boolean {
         return dao.searchFloatOutWakalaOrder(wakalaname)
     }
 
-    suspend fun searchFloatOutWakalaMkuuOrderDuplicate(
-        fromfloatinid: String,
+    suspend fun searchFloatOutOrderNotDuplicate(
         fromtransid: String
     ): Boolean {
-        return dao.searchFloatOutWakalaMkuuOrderDuplicate(fromfloatinid, fromtransid)
+        return dao.searchFloatOutOrderNotDuplicate(fromtransid)
     }
 
 
@@ -218,8 +228,8 @@ class MobileRepository(private val dao: MobileDAO) {
         dao.insertBalance(balance)
     }
 
-    suspend fun getBalance():List<String>{
-        return dao.getBalance()
+    suspend fun getBalance():Int{
+        return dao.getBalance()?.get(0).balance.toInt()
     }
 
 
