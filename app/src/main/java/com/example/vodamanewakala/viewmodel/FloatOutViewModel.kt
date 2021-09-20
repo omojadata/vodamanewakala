@@ -328,7 +328,8 @@ class FloatOutViewModel(private val repository: MobileRepository) : ViewModel(),
 
 
     @RequiresApi(Build.VERSION_CODES.N)
-    suspend fun USSD(floatOut: FloatOut) {
+    fun doUssd(floatOut: FloatOut) : Job =
+        viewModelScope.launch {
         var balanci = repository?.getBalance();
         if (balanci != null) {
             if (balanci >= floatOut.amount.toInt()) {

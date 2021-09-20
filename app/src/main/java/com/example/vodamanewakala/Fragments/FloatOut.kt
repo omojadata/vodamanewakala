@@ -267,13 +267,13 @@ class FloatOut : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun allClicked(floatOut: FloatOut) {
         if (floatOut.status == 0) {
-            floatOutViewModel.USSD(floatOut)
+            floatOutViewModel.doUssd(floatOut)
             Toast.makeText(context, "Inatuma pesa ${floatOut.comment}", Toast.LENGTH_SHORT).show()
             //send USSD
         } else if (floatOut.status == 1) {
             //sendUSSD
             if (floatOutViewModel.modifiedAt >= floatOut.modifiedat + 300000) {
-                floatOutViewModel.USSD(floatOut)
+                floatOutViewModel.doUssd(floatOut)
             } else {
                 val diff = floatOut.modifiedat + 300000
                 Toast.makeText(
