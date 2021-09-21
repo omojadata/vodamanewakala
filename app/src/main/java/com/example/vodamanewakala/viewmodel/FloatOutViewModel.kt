@@ -135,7 +135,7 @@ class FloatOutViewModel(private val repository: MobileRepository) : ViewModel(),
                             }
 
                         } else {
-                            launch {
+
                                 //INSERT FLOATOUT STATUS 3(UNKWOWN ORDER)
                                 uFloatOutChange(
                                     floatOut.floatoutid,
@@ -154,10 +154,9 @@ class FloatOutViewModel(private val repository: MobileRepository) : ViewModel(),
                                     modifiedAt
                                 )
 
-                            }
+
                         }
                     } else {
-                        launch {
 
                             //INSERT FLOATOUT STATUS 4(UNKWOWN WAKALA)
                             uFloatOutChange(
@@ -177,10 +176,10 @@ class FloatOutViewModel(private val repository: MobileRepository) : ViewModel(),
                                 modifiedAt
                             )
 
-                        }
+
                     }
                 } else {
-                    launch {
+
                         uFloatOutChange(
                             floatOut.floatoutid,
                             transid,
@@ -197,11 +196,11 @@ class FloatOutViewModel(private val repository: MobileRepository) : ViewModel(),
                             "",
                             modifiedAt
                         )
-                    }
+
                 }
             } else {
                 val float = floatoutchange.toString()
-                launch {
+
 
                     uFloatOutChange(
                         floatOut.floatoutid,
@@ -227,7 +226,7 @@ class FloatOutViewModel(private val repository: MobileRepository) : ViewModel(),
                     floatoutchange.clear()
 
                 }
-            }
+
         }
 
     private suspend fun dFloatOut(

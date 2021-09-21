@@ -86,15 +86,15 @@ class MyFloatInViewHolder(val binding: FloatinitemlistBinding):RecyclerView.View
      if(floatIn.status==3){
          binding.sectionone.text=floatIn.networksms
          binding.sectiontwo.text=floatIn.comment
-         binding.sectionthree.text=getDate(floatIn.modifiedAt)
+         binding.sectionthree.text=getDate(floatIn.modifiedat)
      }else if(floatIn.status==5){
          binding.sectionone.text=floatIn.networksms
          binding.sectiontwo.text=floatIn.comment
-         binding.sectionthree.text=getDate(floatIn.modifiedAt)
+         binding.sectionthree.text=getDate(floatIn.modifiedat)
      }else{
-         binding.sectionone.text="Tsh "+getComma(floatIn.amount)+"\n"+floatIn.comment+"\n"+floatIn.transid+"\n"+getDate(floatIn.createdAt)
+         binding.sectionone.text="Tsh "+getComma(floatIn.amount)+"\n"+floatIn.comment+"\n"+floatIn.transid+"\n"+getDate(floatIn.createdat)
          binding.sectiontwo.text=floatIn.fromwakalaname+"  "+floatIn.fromwakalacode+"\n"+floatIn.towakalaname+"  "+floatIn.towakalacode
-         binding.sectionthree.text=floatIn.fromnetwork+"->"+floatIn.wakalaorder +"\n"+getDate(floatIn.modifiedAt)
+         binding.sectionthree.text=floatIn.fromnetwork+"->"+floatIn.wakalaorder +"\n"+getDate(floatIn.modifiedat)
      }
 
      binding.listItemLayout.setOnClickListener {
