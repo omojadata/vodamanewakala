@@ -67,29 +67,19 @@ class MainActivity : AppCompatActivity() {
                )
                 ,111)
         }
+       USSDController.verifyAccesibilityAccess(this)
+       USSDController.verifyOverLay(this)
 
         binding.autoLay.setOnCheckedChangeListener { buttonView, isChecked ->
-            var check1= USSDController.verifyAccesibilityAccess(this)
-            var check2= USSDController.verifyOverLay(this)
             GlobalScope.launch {
-
                 if (isChecked){
-                    if(check1&&check2){
-                        dataStorePreference.saveAutoMode(
-                            true
-                        )
-                    }else{
-                        binding.autoLay.isChecked==false
-                    }
-
+                    dataStorePreference.saveAutoMode(
+                        true
+                    )
                 }else{
-                    if(check1&&check2){
-                    }else{
-                        dataStorePreference.saveAutoMode(
-                            false
-                        )
-                        binding.autoLay.isChecked==false
-                    }
+                    dataStorePreference.saveAutoMode(
+                        false
+                    )
                 }
             }
         }
