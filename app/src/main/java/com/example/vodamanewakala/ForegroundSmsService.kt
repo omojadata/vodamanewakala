@@ -70,7 +70,7 @@ class ForegroundSmsService : Service() {
         val smsTime = intent?.getStringExtra("smstime").toString()
 
         val firstword = filterBody(smsbody, 1)
-        val secondword = filterBody(smsbody, 2)
+
         val lastword = smsbody.substring(smsbody.lastIndexOf(" ") + 1)
 
         val createdAt = System.currentTimeMillis()
@@ -159,7 +159,7 @@ class ForegroundSmsService : Service() {
                                         val timeM = getTime(madeAt)
                                         val timeC = getTime(createdAt)
                                         var smsText =
-                                            "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Airtelmoney au Halopesa"
+                                            "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Tigo, Airtelmoney au Halotel"
                                         sendSms(wakalacontact, smsText)
 
                                     } else {
@@ -468,119 +468,121 @@ class ForegroundSmsService : Service() {
                     }
                 }
             } else {
-                if (firstword == "WAKALAMKUU" && lastword == "WAKALAMKUU" && secondword== "Mpesa") {
-                    // "WAKALAMKUU $firstword $amount $towakalacode $[towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalakeyid WAKALAMKUU"
-                    val firstW = filterBody(smsbody, 2)
-                    val amount = filterBody(smsbody, 3)
-                    val wakalacode = filterBody(smsbody, 4)
+                if (firstword == "WAKALAMKUU" && lastword == "WAKALAMKUU") {
+                    val secondword = filterBody(smsbody, 2)
+                    if(secondword == "Vodacom" ) {
+                        // "WAKALAMKUU $firstword $amount $towakalacode $[towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalakeyid WAKALAMKUU"
+                        val firstW = filterBody(smsbody, 2)
+                        val amount = filterBody(smsbody, 3)
+                        val wakalacode = filterBody(smsbody, 4)
 
-                    val namedata = smsbody.substringAfter("[")
-                    val wakalaname = namedata.substringBefore("]")
+                        val namedata = smsbody.substringAfter("[")
+                        val wakalaname = namedata.substringBefore("]")
 
-                    val smsbody2 = smsbody.substringAfter("] ")
-                    val fromfloatinid = filterBody(smsbody2, 1)
-                    val fromtransid = filterBody(smsbody2, 2)
-                    val wakalano = filterBody(smsbody2, 3)
-                    val fromnetwork = filterBody(smsbody2, 4)
-                    val wakalakeyid = filterBody(smsbody2, 5)
+                        val smsbody2 = smsbody.substringAfter("] ")
+                        val fromfloatinid = filterBody(smsbody2, 1)
+                        val fromtransid = filterBody(smsbody2, 2)
+                        val wakalano = filterBody(smsbody2, 3)
+                        val fromnetwork = filterBody(smsbody2, 4)
+                        val wakalakeyid = filterBody(smsbody2, 5)
 
 //                    val floatinstatus = filterBody(smsbody, 9)
-                    val phone = filterNumber(smsAddress)
-                    //CHECK IF TRANSACTION EXISTS
-                    Log.e("hasan", "1")
-                    val searchFloatOutOrderNotDuplicate =
-                        repository.searchFloatOutOrderNotDuplicate(
-                            fromtransid
-                        )
+                        val phone = filterNumber(smsAddress)
+                        //CHECK IF TRANSACTION EXISTS
 
-                    if (searchFloatOutOrderNotDuplicate) {
-                        Log.e("hasan", "2")
-                        //CHECK IF WAKALA MKUU EXISTS AND GET ID
-                        val searchWakalaMkuu = when (fromnetwork) {
-                            "Tigopesa" -> repository.searchWakalaMkuuTigo(phone)?.wakalamkuuid
-                            "Airtelmoney" -> repository.searchWakalaMkuuAirtel(phone)?.wakalamkuuid
-                            "Halopesa" -> repository.searchWakalaMkuuHalotel(phone)?.wakalamkuuid
-                            else -> ""
-                        }
+                        val searchFloatOutOrderNotDuplicate =
+                            repository.searchFloatOutOrderNotDuplicate(
+                                fromtransid
+                            )
+
+                        if (searchFloatOutOrderNotDuplicate) {
+
+                            //CHECK IF WAKALA MKUU EXISTS AND GET ID
+                            val searchWakalaMkuu = when (fromnetwork) {
+                                "Tigo" -> repository.searchWakalaMkuuTigo(phone)?.wakalamkuuid
+                                "Airtelmoney" -> repository.searchWakalaMkuuAirtel(phone)?.wakalamkuuid
+                                "Halotel" -> repository.searchWakalaMkuuHalotel(phone)?.wakalamkuuid
+                                else -> ""
+                            }
 
 //                       val searchWakalaMkuu = repository.searchWakalaMkuuVoda(phone).wakalamkuuid
 
-                        if (!searchWakalaMkuu.isNullOrBlank()) {
-                            //CHECK IF WAKALA EXISTS AND GET CODE
-                            val searchWakalaCode = repository.searchWakalaVoda(
-                                wakalaname,
-                                wakalacode,
-                                wakalakeyid
-                            )?.mpesa
-
-                            //CHECK IF WAKALA EXISTS AND GET NAME
-                            val searchWakalaName = repository.searchWakalaVoda(
-                                wakalaname,
-                                wakalacode,
-                                wakalakeyid
-                            )?.vodaname
-
-                            if (searchWakalaCode != null && searchWakalaName != null) {
-                                //INSERT FLOATOUT STATUS 0(PENDING)
-
-                                iFloatOut(
-                                    "",
-                                    amount,
+                            if (!searchWakalaMkuu.isNullOrBlank()) {
+                                //CHECK IF WAKALA EXISTS AND GET CODE
+                                val searchWakalaCode = repository.searchWakalaVoda(
                                     wakalaname,
                                     wakalacode,
-                                    fromnetwork,
-                                    "",
-                                    searchWakalaMkuu,
-                                    fromfloatinid,
-                                    fromtransid,
-                                    0,
-                                    "PENDING",
-                                    "",
-                                    wakalano,
-                                    createdAt,
-                                    modifiedAt,
-                                    madeAt,
-                                    0,
-                                    repository
-                                )
-                                sendBroadcast(Intent().setAction("floatOutReceiver"))
-                                //CHECK BALANCE
-//                                    val balanci = repository.getBalance().balance.toInt()
-                                val balancecheck = repository?.getBalance()
-                                if (balancecheck >= amount.toInt()) {
-                                    // CHECK IF AUTO ON
-                                    val checkAuto = dataStorePreference.autoMode.first()
-                                    if (checkAuto) {
-                                        //DAILL USSD
-//
-                                        dialUssd(
-                                            "*150*00#",
-                                            wakalacode,
-                                            wakalaname,
-                                            amount,
-                                            modifiedAt,
-                                            fromfloatinid,
-                                            fromtransid,
-                                            repository,
-                                            applicationContext,
-                                            scope
-                                        )
-                                    }
-                                } else {
-                                    Toast.makeText(
-                                        applicationContext,
-                                        "HAMNA SALIO",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    val SmsText = "HAMNA SALIO BALANCE NI:{$balancecheck}"
-                                    sendSms(errornumber, SmsText)
-                                }
+                                    wakalakeyid
+                                )?.mpesa
 
+                                //CHECK IF WAKALA EXISTS AND GET NAME
+                                val searchWakalaName = repository.searchWakalaVoda(
+                                    wakalaname,
+                                    wakalacode,
+                                    wakalakeyid
+                                )?.vodaname
+
+                                if (searchWakalaCode != null && searchWakalaName != null) {
+                                    //INSERT FLOATOUT STATUS 0(PENDING)
+
+                                    iFloatOut(
+                                        "",
+                                        amount,
+                                        wakalaname,
+                                        wakalacode,
+                                        fromnetwork,
+                                        "",
+                                        searchWakalaMkuu,
+                                        fromfloatinid,
+                                        fromtransid,
+                                        0,
+                                        "PENDING",
+                                        "",
+                                        wakalano,
+                                        createdAt,
+                                        modifiedAt,
+                                        madeAt,
+                                        0,
+                                        repository
+                                    )
+                                    sendBroadcast(Intent().setAction("floatOutReceiver"))
+                                    //CHECK BALANCE
+//                                    val balanci = repository.getBalance().balance.toInt()
+                                    val balancecheck = repository?.getBalance()
+                                    if (balancecheck >= amount.toInt()) {
+                                        // CHECK IF AUTO ON
+                                        val checkAuto = dataStorePreference.autoMode.first()
+                                        if (checkAuto) {
+                                            //DAILL USSD
+//
+                                            dialUssd(
+                                                "*150*00#",
+                                                wakalacode,
+                                                wakalaname,
+                                                amount,
+                                                modifiedAt,
+                                                fromfloatinid,
+                                                fromtransid,
+                                                repository,
+                                                applicationContext,
+                                                scope
+                                            )
+                                        }
+                                    } else {
+                                        Toast.makeText(
+                                            applicationContext,
+                                            "HAMNA SALIO",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        val SmsText = "HAMNA SALIO BALANCE NI:{$balancecheck}"
+                                        sendSms(errornumber, SmsText)
+                                    }
+
+                                }
                             }
                         }
                     }
-
-                } else if (firstword == "Tigopesa" || firstword == "Airtelmoney" || firstword == "Halopesa") {
+                } else if (firstword == "Tigo" || firstword == "Airtelmoney" || firstword == "Halotel") {
 
                     val phone = filterNumber(smsAddress)
 
@@ -595,23 +597,23 @@ class ForegroundSmsService : Service() {
                         if (searchFloatInOrder != null) {
 
                             val wakalamkuunumber = when (firstword) {
-                                "Tigopesa" -> repository.getWakalaMkuu().tigophone
-                                "Airtelmoney" -> repository.getWakalaMkuu().airtelphone
-                                "Halopesa" -> repository.getWakalaMkuu().halophone
+                                "Tigo" -> repository.getWakalaMkuu().tigophone
+                                "Airtel" -> repository.getWakalaMkuu().airtelphone
+                                "Halotel" -> repository.getWakalaMkuu().halophone
                                 else -> ""
                             }
 
                             val towakalacode = when (firstword) {
-                                "Tigopesa" -> searchWakala.tigopesa
+                                "Tigo" -> searchWakala.tigopesa
                                 "Airtelmoney" -> searchWakala.airtelmoney
-                                "Halopesa" -> searchWakala.halopesa
+                                "Halotel" -> searchWakala.halopesa
                                 else -> ""
                             }
 
                             val towakalaname = when (firstword) {
-                                "Tigopesa" -> searchWakala.tigoname
+                                "Tigo" -> searchWakala.tigoname
                                 "Airtelmoney" -> searchWakala.airtelname
-                                "Halopesa" -> searchWakala.haloname
+                                "Halotel" -> searchWakala.haloname
                                 else -> ""
                             }
 

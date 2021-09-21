@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/_7a.m/AndroidStudioProjects/github/vodamanewakala/app/src/main/res/layout/activity_main.xml" value="0.1734375" />
-        <entry key="..\:/Users/_7a.m/AndroidStudioProjects/github/vodamanewakala/app/src/main/res/layout/fragment_float_in.xml" value="0.1734375" />
+        <entry key="..\:/Users/hassan manengelo/AndroidStudioProjects/vodamanewakala/app/src/main/res/layout/floatinitemlist.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/hassan manengelo/AndroidStudioProjects/vodamanewakala/app/src/main/res/layout/floatoutitemlist.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/hassan manengelo/AndroidStudioProjects/vodamanewakala/app/src/main/res/layout/fragment_float_in.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/hassan manengelo/AndroidStudioProjects/vodamanewakala/app/src/main/res/layout/fragment_wakala.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
