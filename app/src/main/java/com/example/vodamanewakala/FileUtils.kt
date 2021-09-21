@@ -26,9 +26,9 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 var fromnetwork = "Mpesa"
-const val mtandao = "+255714363727"
+const val mtandao = "M-PESA"
 const val errornumber = "+255683071757"
-val contactnumber = "+255714363727"
+//val contactnumber = "+255714363727"
 var floatinchange = StringBuilder()
 var floatoutchange = StringBuilder()
 fun generateFile(context: Context?, fileName: String): File? {

@@ -70,6 +70,7 @@ class ForegroundSmsService : Service() {
         val smsTime = intent?.getStringExtra("smstime").toString()
 
         val firstword = filterBody(smsbody, 1)
+        val secondword = filterBody(smsbody, 2)
         val lastword = smsbody.substring(smsbody.lastIndexOf(" ") + 1)
 
         val createdAt = System.currentTimeMillis()
@@ -158,7 +159,7 @@ class ForegroundSmsService : Service() {
                                         val timeM = getTime(madeAt)
                                         val timeC = getTime(createdAt)
                                         var smsText =
-                                            "Muamala No: ${transid}, Kiasi: Tsh $amounting, Muda uliotuma: $timeM, Muda ulioingia: $timeC, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Airtelmoney au Halopesa"
+                                            "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Airtelmoney au Halopesa"
                                         sendSms(wakalacontact, smsText)
 
                                     } else {
@@ -467,7 +468,7 @@ class ForegroundSmsService : Service() {
                     }
                 }
             } else {
-                if (firstword == "WAKALAMKUU" && lastword == "WAKALAMKUU") {
+                if (firstword == "WAKALAMKUU" && lastword == "WAKALAMKUU" && secondword== "Mpesa") {
                     // "WAKALAMKUU $firstword $amount $towakalacode $[towakalaname] $fromfloatinid $fromtransid $wakalano $fromnetwork $wakalakeyid WAKALAMKUU"
                     val firstW = filterBody(smsbody, 2)
                     val amount = filterBody(smsbody, 3)

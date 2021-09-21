@@ -146,11 +146,9 @@ class FloatInViewModel(private val repository: MobileRepository) : ViewModel(), 
                                 )
 
                                 val amounting = getComma(amount)
-                                val timeM = getTime(floatIn.madeatfloat)
-                                val timeC = getTime(floatIn.createdat)
 
                                 var smsText =
-                                    "Muamala No: ${transid}, Kiasi: Tsh $amounting, Muda uliotuma: $timeM, Muda ulioingia: $timeC, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Mpesa au Halopesa"
+                                    "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Tigopesa, Airtelmoney au Halopesa"
                                 sendSms(wakalacontact, smsText)
 
                             } else {

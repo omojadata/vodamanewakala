@@ -304,7 +304,7 @@ class FloatIn : Fragment() {
 
 
     fun exportFloatIn() {
-        val csvFile = generateFile(context, "FloatOut.csv")
+        val csvFile = generateFile(context, "FloatIn.csv")
         if (csvFile != null) {
             exportRoomToFile(csvFile)
             val intent = goToFileIntent(context, csvFile)
