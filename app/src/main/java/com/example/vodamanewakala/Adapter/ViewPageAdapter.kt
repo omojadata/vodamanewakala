@@ -6,31 +6,32 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.vodamanewakala.Fragments.*
 
-class ViewPageAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle): FragmentStateAdapter(fragmentManager, lifecycle) {
+class ViewPageAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+    FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
         return 5
     }
 
 
-//
+    //
     override fun createFragment(position: Int): Fragment {
-          return when(position){
-            0->{
+        return when (position) {
+            0 -> {
                 Wakala()
             }
-            1->{
+            1 -> {
                 WakalaMkuu()
             }
-            2->{
+            2 -> {
                 FloatOut()
             }
-            3->{
+            3 -> {
                 FloatIn()
             }
-              4->{
-                  Balance()
-              }
-            else->{
+            4 -> {
+                Balance()
+            }
+            else -> {
                 throw IllegalArgumentException()
             }
 

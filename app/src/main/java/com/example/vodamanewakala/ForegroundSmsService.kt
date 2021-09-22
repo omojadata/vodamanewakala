@@ -554,19 +554,32 @@ class ForegroundSmsService : Service() {
                                         val checkAuto = dataStorePreference.autoMode.first()
                                         if (checkAuto) {
                                             //DAILL USSD
-//
-                                            dialUssd(
-                                                "*150*00#",
-                                                wakalacode,
-                                                wakalaname,
-                                                amount,
-                                                modifiedAt,
-                                                fromfloatinid,
-                                                fromtransid,
-                                                repository,
-                                                applicationContext,
-                                                scope
-                                            )
+                                            if(USSDController.verifyAccesibilityAccess(applicationContext) &&  USSDController.verifyOverLay(applicationContext) ){
+                                                dialUssd(
+                                                    "*150*00#",
+                                                    wakalacode,
+                                                    wakalaname,
+                                                    amount,
+                                                    modifiedAt,
+                                                    fromfloatinid,
+                                                    fromtransid,
+                                                    repository,
+                                                    applicationContext,
+                                                    scope
+                                                )
+                                            }
+//                                            dialUssd(
+//                                                "*150*00#",
+//                                                wakalacode,
+//                                                wakalaname,
+//                                                amount,
+//                                                modifiedAt,
+//                                                fromfloatinid,
+//                                                fromtransid,
+//                                                repository,
+//                                                applicationContext,
+//                                                scope
+//                                            )
                                         }
                                     } else {
                                         Toast.makeText(
