@@ -159,7 +159,7 @@ class ForegroundSmsService : Service() {
                                         val timeM = getTime(madeAt)
                                         val timeC = getTime(createdAt)
                                         var smsText =
-                                            "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Tigo, Airtelmoney au Halotel"
+                                            "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Tigo, Airtel au Halotel"
                                         sendSms(wakalacontact, smsText)
 
                                     } else {
@@ -500,7 +500,7 @@ class ForegroundSmsService : Service() {
                             //CHECK IF WAKALA MKUU EXISTS AND GET ID
                             val searchWakalaMkuu = when (fromnetwork) {
                                 "Tigo" -> repository.searchWakalaMkuuTigo(phone)?.wakalamkuuid
-                                "Airtelmoney" -> repository.searchWakalaMkuuAirtel(phone)?.wakalamkuuid
+                                "Airtel" -> repository.searchWakalaMkuuAirtel(phone)?.wakalamkuuid
                                 "Halotel" -> repository.searchWakalaMkuuHalotel(phone)?.wakalamkuuid
                                 else -> ""
                             }
@@ -595,7 +595,7 @@ class ForegroundSmsService : Service() {
                             }
                         }
                     }
-                } else if (firstword == "Tigo" || firstword == "Airtelmoney" || firstword == "Halotel") {
+                } else if (firstword == "Tigo" || firstword == "Airtel" || firstword == "Halotel") {
 
                     val phone = filterNumber(smsAddress)
 
@@ -618,14 +618,14 @@ class ForegroundSmsService : Service() {
 
                             val towakalacode = when (firstword) {
                                 "Tigo" -> searchWakala.tigopesa
-                                "Airtelmoney" -> searchWakala.airtelmoney
+                                "Airtel" -> searchWakala.airtelmoney
                                 "Halotel" -> searchWakala.halopesa
                                 else -> ""
                             }
 
                             val towakalaname = when (firstword) {
                                 "Tigo" -> searchWakala.tigoname
-                                "Airtelmoney" -> searchWakala.airtelname
+                                "Airtel" -> searchWakala.airtelname
                                 "Halotel" -> searchWakala.haloname
                                 else -> ""
                             }
