@@ -203,7 +203,7 @@ fun checkFloatOutWords(str: String):Boolean{
 
     //name
      val namedata = str.substringAfter("- ")
-     val name = namedata.substringBefore(".Salio ")
+     val name = namedata.substringBefore(".Salio ").trim()
 
     //balance
      val balancedata = str.substringAfter("M-Pesa ni ")
@@ -270,7 +270,7 @@ fun checkFloatOut(str: String): Boolean {
 
      //name
      val namedata = str.substringAfter("- ")
-     val name = namedata.substringBefore(". Salio ")
+     val name = namedata.substringBefore(". Salio ").trim()
 
      //balance
      val balancedata = str.substringAfter("akaunti yako ni ")
