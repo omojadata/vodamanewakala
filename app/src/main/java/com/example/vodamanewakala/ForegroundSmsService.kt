@@ -725,7 +725,7 @@ class ForegroundSmsService : Service() {
                     "$fromnetwork SALIO = : CHINI CHA ${getComma(balancecheck.toString())}"
                 Log.e("hasms", balancecheck.toString())
                 Log.e("hasms", repository.getBalance().toString())
-                Toast.makeText(applicationContext, "This foreground", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "VODA BALANCE ${getComma(balancecheck.toString())}", Toast.LENGTH_SHORT).show()
                 sendSms(errornumber, smsText)
             }
         }
