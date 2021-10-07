@@ -7,9 +7,12 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.*
+import com.example.vodamanewakala.db.Balance
 import com.example.vodamanewakala.db.MobileRepository
 import com.romellfudi.ussdlibrary.USSDController.context
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class BalanceViewModel (private val repository: MobileRepository): ViewModel(), Observable {
 //    val balance= repository.balance
@@ -21,10 +24,10 @@ class BalanceViewModel (private val repository: MobileRepository): ViewModel(), 
     }
 
 //
-//    fun insertBalance(balance: List<Balance>): Job =
-//        viewModelScope.launch {
-//            repository.insertTestBalance(balance)
-//        }
+    fun insertBalance(balance: Balance): Job =
+        viewModelScope.launch {
+            repository.insertBalance(balance)
+        }
     @Bindable
     val getButtonText =MutableLiveData<String>()
 

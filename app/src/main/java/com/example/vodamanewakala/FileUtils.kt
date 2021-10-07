@@ -31,6 +31,7 @@ const val errornumber = "+255683071757"
 //val contactnumber = "+255714363727"
 var floatinchange = StringBuilder()
 var floatoutchange = StringBuilder()
+
 fun generateFile(context: Context?, fileName: String): File? {
         val csvFile = File(context?.filesDir, fileName)
         csvFile.createNewFile()
@@ -319,7 +320,7 @@ suspend fun dialUssd(
                                 ussdchange.append(" amount")
                                 ussdApi.send("MAN") {
                                     ussdchange.append(" muhudumu")
-                                    ussdApi.send("0007") { message3 ->
+                                    ussdApi.send("1020") { message3 ->
                                         ussdchange.append(" PIN")
                                         if (message3.contains(wakalaname)) {
                                             ussdchange.append(" Accept")
