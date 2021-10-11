@@ -58,9 +58,6 @@ class Balance: Fragment() {
         binding.insertBalanceFab.visibility= View.GONE;
         binding.downloadBalanceFab.visibility= View.GONE;
 
-//        binding.refreshWakalamkuuFab.visibility = View.GONE;
-//        binding.refreshWakalamkuuText.visibility=View.GONE;
-
         isAllFabsVisible = false;
 
         binding.balanceFab.setOnClickListener(

@@ -159,7 +159,7 @@ class ForegroundSmsService : Service() {
                                         val timeM = getTime(madeAt)
                                         val timeC = getTime(createdAt)
                                         var smsText =
-                                            "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Tigo, Airtel au Halotel"
+                                            "Kiasi: Tsh $amounting, Mtandao: $fromnetwork itumwe wapi? Jibu Airtel au Halotel"
                                         sendSms(wakalacontact, smsText)
 
                                     } else {
@@ -595,7 +595,7 @@ class ForegroundSmsService : Service() {
                             }
                         }
                     }
-                } else if (firstword == "Tigo" || firstword == "Airtel" || firstword == "Halotel") {
+                } else if (firstword == "Airtel" || firstword == "Halotel") {
 
                     val phone = filterNumber(smsAddress)
 
