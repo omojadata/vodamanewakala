@@ -29,7 +29,7 @@ var fromnetwork = "Vodacom"
 const val mtandao = "M-PESA"
 //const val mtandao = "+255714363727"
 const val errornumber = "+255714363727"
-//val contactnumber = "+255714363727"
+//val contactnumber = "+255714 n363727"
 var floatinchange = StringBuilder()
 var floatoutchange = StringBuilder()
 
